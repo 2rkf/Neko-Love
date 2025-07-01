@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="generator" content="VuePress 2.0.0-beta.51">
+    <style>
+      :root {
+        --c-bg: #fff;
+      }
+      html.dark {
+        --c-bg: #22272e;
+      }
+      html, body {
+        background-color: var(--c-bg);
+      }
+    </style>
+    <script>
+      const userMode = localStorage.getItem('vuepress-color-scheme');
+			const systemDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+			if (userMode === 'dark' || (userMode !== 'light' && systemDarkMode)) {
+				document.documentElement.classList.toggle('dark', true);
+			}
+    </script>
+    <link rel="icon" href="https://chariotmoe.github.io/chariot-docs/favicon.ico"><meta property="og:title" content="Chariot"><meta property="og:image" content="https://chariotmoe.github.io/chariot-docs/chariot.png"><meta property="og:description" content="The house documentation for Chariot."><meta property="theme-color" content="#7E6AAD"><title>Seria</title><meta name="description" content="A Rust-based library for interacting with Revolt.">
+    <link rel="modulepreload" href="/assets/app.7337a280.js"><link rel="modulepreload" href="/assets/404.html.84e2e9d1.js"><link rel="modulepreload" href="/assets/404.html.be50726e.js"><link rel="prefetch" href="/assets/FAQ.html.3ad06e8a.js"><link rel="prefetch" href="/assets/getting-started.html.a92caef3.js"><link rel="prefetch" href="/assets/FAQ.html.ae8d5b1b.js"><link rel="prefetch" href="/assets/getting-started.html.f8d633cb.js">
+    <link rel="stylesheet" href="/assets/style.04358fb3.css">
+  </head>
+  <body>
+    <div id="app"><!--[--><div class="theme-container"><main class="page"><div class="theme-default-content"><h1>404</h1><blockquote>Looks like we&#39;ve got some broken links.</blockquote><a href="/" class="">Take me home</a></div></main></div><!----><!--]--></div>
+    <script type="module" src="/assets/app.7337a280.js" defer></script>
+  </body>
+</html>

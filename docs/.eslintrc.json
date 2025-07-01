@@ -1,0 +1,12 @@
+{
+	"extends": [
+		"eslint:recommended",
+		"plugin:markdown/recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:prettier/recommended"
+	],
+	"rules": {
+		"@typescript-eslint/no-var-requires": "off",
+		"no-undef": "off"
+	}
+}

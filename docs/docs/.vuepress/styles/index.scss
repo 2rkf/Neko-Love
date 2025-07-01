@@ -1,0 +1,249 @@
+// Custom SCSS for VuePress Theme - Orange Edition
+:root {
+  scroll-behavior: smooth;
+  --c-brand: #f7b98b;         // Soft, balanced pastel orange
+  --c-brand-light: #fcd6ae;   // Light, not overly bright
+  --c-brand-dark: #dd9c70;    // Mild shadow tone for contrast
+  --c-bg: #f4f4f5;            // Slightly warmer than pure white
+  --c-bg-light: #e6e6e8;
+  --c-bg-lighter: #dddddf;
+  --c-bg-navbar: #eeeef0;
+  --c-bg-sidebar: var(--c-bg-lighter);
+  --c-text: #2e2e33;          // Softer black
+  --c-text-light: #50505a;
+  --c-text-lighter: var(--c-text);
+  --c-text-quote: var(--c-text);
+  --c-border: #cfcfd2;        // Light, neutral border
+  --c-tip: #58ba9c;           // Softened green tip
+  --c-tip-bg: var(--c-bg-light);
+  --c-tip-title: var(--c-text);
+  --c-tip-text: var(--c-text);
+  --c-danger: #ec8484;        // Muted red for better readability
+  --c-danger-bg: var(--c-bg-light);
+  --c-danger-title: var(--c-text);
+  --c-danger-text: var(--c-text);
+  --c-warning: #f5bb76;       // Gentle warm warning tone
+  --c-warning-bg: var(--c-bg-light);
+  --c-warning-title: var(--c-text);
+  --c-warning-text: var(--c-text);
+  --code-bg-color: #2f3038;   // Slightly softened dark tone
+  --content-width: 1;
+  --sidebar-width: 250px;
+  --c-ts: #f7b98b;            // Match brand
+  --navbar-height: 3.6rem;
+  --code-font-family: 'Fira Code', 'Source Code Pro', Menlo, Monaco, Consolas, monospace;
+}
+
+html.dark {
+  --c-brand: #f7b98b;
+  --c-brand-light: #fcd6ae;
+  --c-brand-dark: #dd9c70;
+  --c-bg: #1d1d1f;            // Slightly lighter than before
+  --c-bg-light: #2a2a2c;
+  --c-bg-lighter: #3a3a3c;
+  --c-bg-navbar: #262628;
+  --c-bg-sidebar: var(--c-bg-lighter);
+  --c-text: #e6e6e8;
+  --c-text-light: #bcbcc0;
+  --c-text-lighter: var(--c-text);
+  --c-text-quote: var(--c-text);
+  --c-border: #4a4a4c;
+  --c-warning: #f5bb76;
+  --code-bg-color: #232325;
+}
+
+
+// Base styles
+body {
+  color: var(--c-text);
+  background-color: var(--c-bg);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+blockquote {
+  border-left-color: var(--c-brand);
+}
+
+a {
+  color: var(--c-brand);
+  &:hover {
+    color: var(--c-brand-light);
+  }
+}
+
+// Navbar
+.navbar {
+  background-color: var(--c-bg-navbar);
+  border-bottom: 1px solid var(--c-border);
+  .site-name {
+    color: var(--c-text);
+  }
+  .nav-item > a:not(.external):hover {
+    color: var(--c-brand);
+  }
+}
+
+// Sidebar
+.sidebar {
+  background-color: var(--c-bg-sidebar);
+  border-right: 1px solid var(--c-border);
+  .sidebar-link {
+    color: var(--c-text);
+    &.active {
+      color: var(--c-brand);
+      border-left-color: var(--c-brand);
+    }
+    &:hover {
+      color: var(--c-brand-light);
+    }
+  }
+}
+
+// Content
+.content__default {
+  a:hover {
+    text-decoration: underline;
+  }
+  code {
+    background-color: var(--c-bg-light);
+    color: var(--c-text);
+  }
+  pre {
+    background-color: var(--code-bg-color);
+    code {
+      background-color: transparent;
+    }
+  }
+}
+
+// Code blocks
+div[class*=language-] {
+  background-color: var(--code-bg-color);
+  &::before {
+    background: var(--c-ts);  // Now orange
+    color: white;
+    padding: 0 5px;
+    text-transform: uppercase;
+    border-radius: 2px;
+  }
+}
+
+// Custom containers
+.custom-container {
+  border-radius: 6px;
+  &.tip {
+    border-color: var(--c-tip);
+    background-color: var(--c-tip-bg);
+  }
+  &.warning {
+    border-color: var(--c-warning);  // Now orange
+    background-color: var(--c-warning-bg);
+  }
+  &.danger {
+    border-color: var(--c-danger);
+    background-color: var(--c-danger-bg);
+  }
+}
+
+// Search box
+.search-box {
+  input {
+    --search-input-width: 250px;
+    border-radius: 6px !important;
+    background-color: var(--c-bg-light);
+    color: var(--c-text);
+    border: 1px solid var(--c-border);
+    &:focus {
+      border-color: var(--c-brand);  // Orange focus
+    }
+  }
+}
+
+// Code groups
+.code-group {
+  &__ul {
+    background-color: #373943;
+    border-radius: 6px;
+  }
+  &__nav-tab {
+    color: var(--c-text-light);
+    &-active {
+      background-color: var(--c-ts);  // Now orange
+      border-radius: 6px;
+      border: none;
+      color: white;
+    }
+  }
+}
+
+html.dark {
+  .code-group__ul {
+    background-color: var(--c-bg);
+    border-radius: 6px;
+  }
+}
+
+// Dark mode toggle
+.toggle-color-mode-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--c-text);
+  &:hover {
+    color: var(--c-brand);  // Orange hover
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 959px) {
+  .sidebar {
+    background-color: var(--c-bg);
+  }
+  .navbar {
+    .site-name {
+      color: var(--c-text);
+    }
+  }
+}
+
+// Scrollbar styling
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--c-bg-light);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--c-brand);  // Orange scrollbar
+  border-radius: 4px;
+  &:hover {
+    background: var(--c-brand-light);  // Lighter orange on hover
+  }
+}
+
+// Additional orange accents
+.theme-default-content {
+  h1, h2, h3, h4, h5, h6 {
+    a.header-anchor {
+      color: var(--c-brand-light);
+      &:hover {
+        color: var(--c-brand);
+      }
+    }
+  }
+}
+
+// Orange buttons
+button, .action-button {
+  &.primary {
+    background-color: var(--c-brand);
+    border-color: var(--c-brand);
+    &:hover {
+      background-color: var(--c-brand-light);
+    }
+  }
+}

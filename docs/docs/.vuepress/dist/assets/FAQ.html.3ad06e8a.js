@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-39a2059c","path":"/FAQ.html","title":"Frequently Asked Question(s)","lang":"en-GB","frontmatter":{},"excerpt":"","headers":[{"level":2,"title":"Why is this called Seria?","slug":"why-is-this-called-seria","link":"#why-is-this-called-seria","children":[]}],"git":{},"filePathRelative":"FAQ.md"}');export{e as data};
