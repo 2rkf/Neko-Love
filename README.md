@@ -1,4 +1,4 @@
-# Neko-Love API V4
+# Neko-Love
 
 ![nekolove logo](logo.png)
 

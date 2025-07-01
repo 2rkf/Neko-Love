@@ -1,5 +1,5 @@
 # Frequently Asked Question(s)
 
-## Why is this called Seria?
+## What is Neko-Love?
 
--   It's silly.
+-   It's an API which has a collection of thousands anime-style images.
