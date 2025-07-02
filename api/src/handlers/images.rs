@@ -1,26 +1,28 @@
+use crate::{app_state::AppState, models::response::ApiResponse};
 use axum::{
+    Json,
     extract::{Path, State},
+    http::StatusCode,
     response::IntoResponse,
-    Json, http::StatusCode,
 };
-use crate::models::response::ApiResponse;
-use std::sync::Arc;
-use crate::services::image_service::ImageService;
 
 /// Handler for GET /api/v1/{content_type}/{category}
 /// Returns a random image from the specified category
 pub async fn get_random_image(
     Path((content_type, category)): Path<(String, String)>,
-    State(image_service): State<Arc<ImageService>>,
+    State(state): State<AppState>,
 ) -> impl IntoResponse {
-    match image_service.get_random_image(&content_type, &category) {
+    match state
+        .image_service
+        .get_random_image(&content_type, &category)
+    {
         Ok((id, filename)) => {
             let response = ApiResponse {
                 id: Some(id.clone()),
                 message: None,
                 success: true,
                 status: StatusCode::OK.as_u16(),
-                url: Some(image_service.build_image_url(&filename)),
+                url: Some(state.image_service.build_image_url(&filename)),
             };
             (StatusCode::OK, Json(response))
         }
