@@ -28,7 +28,6 @@
             variant="ghost"
             size="lg"
             label="Login"
-            icon="i-lucide-user"
             class="font-medium text-base cursor-pointer text-orange-200"
           />
         </div>
