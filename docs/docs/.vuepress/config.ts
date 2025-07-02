@@ -11,10 +11,10 @@ export default defineUserConfig({
         ["link", { rel: "icon", href: "/favicon.ico" }],
         ["meta", { property: "og:title", content: "Neko-Love" }],
         ["meta", { property: "og:image", content: "/hero.png" }],
-        ["meta", { property: "og:description", content: "Home of an anime-style image API, primarily offering cute “neko” (cat-girl) graphics." }],
+        ["meta", { property: "og:description", content: "Neko-Love is a collection of high-quality images featuring characters with anime-style appearances." }],
         ["meta", { property: "theme-color", content: "#ff7b25" }],
     ],
-    description: "Home of an anime-style image API, primarily offering cute “neko” (cat-girl) graphics.",
+    description: "Neko-Love is a collection of high-quality images featuring characters with anime-style appearances.",
     extendsPage: (data) => {
         if (data.frontmatter.permalink) {
             return;
