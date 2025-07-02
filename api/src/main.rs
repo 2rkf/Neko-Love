@@ -36,8 +36,8 @@ async fn main() {
                 let response = ApiResponse {
                     id: None,
                     message: Some("Method not allowed.".into()),
-                    success: false,
                     status: StatusCode::METHOD_NOT_ALLOWED.as_u16(),
+                    success: false,
                     url: None,
                 };
 
@@ -55,6 +55,17 @@ async fn main() {
                 }
             }),
         )
+        .fallback(|| async {
+            let response = ApiResponse {
+                id: None,
+                message: Some("Route not found.".into()),
+                status: StatusCode::NOT_FOUND.as_u16(),
+                success: false,
+                url: None,
+            };
+
+            (StatusCode::NOT_FOUND, Json(response))
+        })
         .layer(middleware::from_fn(log_requests))
         .with_state(image_service);
 
