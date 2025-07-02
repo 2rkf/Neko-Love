@@ -52,7 +52,7 @@ pub async fn serve_file(
 
     let response = ApiResponse {
         id: None,
-        message: "File not found.".into(),
+        message: Some("File not found.".into()),
         success: false,
         status: StatusCode::NOT_FOUND.as_u16(),
         url: None,

@@ -35,7 +35,7 @@ async fn main() {
             routing::any(|| async {
                 let response = ApiResponse {
                     id: None,
-                    message: "Method not allowed.".into(),
+                    message: Some("Method not allowed.".into()),
                     success: false,
                     status: StatusCode::METHOD_NOT_ALLOWED.as_u16(),
                     url: None,

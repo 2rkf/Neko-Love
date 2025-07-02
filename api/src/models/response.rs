@@ -5,7 +5,8 @@ use serde::Serialize;
 pub struct ApiResponse {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    pub message: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     pub success: bool,
     pub status: u16,
     #[serde(skip_serializing_if = "Option::is_none")]

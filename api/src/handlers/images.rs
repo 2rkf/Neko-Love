@@ -17,7 +17,7 @@ pub async fn get_random_image(
         Ok((id, filename)) => {
             let response = ApiResponse {
                 id: Some(id.clone()),
-                message: "".into(),
+                message: None,
                 success: true,
                 status: StatusCode::OK.as_u16(),
                 url: Some(image_service.build_image_url(&filename)),
@@ -28,7 +28,7 @@ pub async fn get_random_image(
             eprintln!("Error getting random image: {}", e);
             let response = ApiResponse {
                 id: None,
-                message: "Unknown image category.".into(),
+                message: Some("Unknown image category.".into()),
                 success: false,
                 status: StatusCode::BAD_REQUEST.as_u16(),
                 url: None,
