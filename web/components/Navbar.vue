@@ -19,7 +19,7 @@
         variant="ghost"
         size="lg"
         label="Discord Server"
-        to="https://discord.gg/your-server-invite"
+        to="https://discord.gg/Az8RWJJ6fT"
         class="font-medium text-base cursor-pointer text-orange-200"
         target="_blank"
       />
