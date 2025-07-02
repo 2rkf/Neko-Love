@@ -1,0 +1,25 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+:root {
+  --color-pastel-orange-100: #fff1e6;
+  --color-pastel-orange-200: #ffd8b1;
+  --color-pastel-orange-300: #ffb347;
+  --color-pastel-orange-400: #ff9933;
+  --color-pastel-orange-500: #ff8800;
+  --color-pastel-orange-600: #e67300;
+  --color-pastel-orange-700: #cc6600;
+  --color-pastel-orange-800: #b35900;
+  --color-pastel-orange-900: #994d00;
+}
+
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
