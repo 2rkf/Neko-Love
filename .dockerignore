@@ -1,0 +1,42 @@
+# Ignore Git metadata
+.git
+.gitignore
+
+# Ignore OS/editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.log
+*.tmp
+*.bak
+
+# Ignore IDE/editor settings
+.vscode/
+.idea/
+*.code-workspace
+
+# Ignore node_modules in web and docs (not needed in context)
+web/node_modules/
+docs/node_modules/
+
+# Ignore Nuxt build output
+web/.output/
+web/.nuxt/
+web/dist/
+
+# Ignore Vuepress output
+docs/.vuepress/dist/
+
+# Ignore Rust target directories
+api/target/
+bot/target/
+
+# Ignore env files across all services
+**/.env
+**/.env.local
+**/.env.*.local
+
+# Optional: Ignore test directories
+**/__tests__/
+**/tests/

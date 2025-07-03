@@ -8,6 +8,7 @@
 		"dev": "vuepress dev docs --port 3001",
 		"build": "vuepress build docs",
 		"lint": "eslint --ext \".ts\"",
+		"docs:serve": "npx serve docs/.vuepress/dist",
 		"format": "prettier **/*.{ts,js,md,json,yml,yaml} --write"
 	},
 	"license": "MIT",
