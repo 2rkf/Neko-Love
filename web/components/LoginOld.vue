@@ -1,6 +1,5 @@
 <template>
   <div class="min-h-screen flex flex-col bg-zinc-800 text-zinc-100 noselect">
-    <Navbar />
     <main class="flex-grow flex items-start justify-center px-4 pt-40 pb-16">
       <UCard
         class="w-full max-w-md shadow-lg border border-zinc-700 bg-zinc-900"

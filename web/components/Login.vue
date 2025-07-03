@@ -45,7 +45,7 @@
 
           <div class="pt-4 space-y-4">
             <UButton
-              type="submit"
+              @click.prevent="authorise"
               block
               size="lg"
               color="primary"
@@ -69,9 +69,53 @@
 </template>
 
 <script setup>
+const config = useAppConfig();
 const username = ref("");
 const password = ref("");
 const toRegister = () => useRouter().push("/register");
+const toast = useToast();
+const { login } = useAuth();
+
+async function authorise() {
+  try {
+    const { data, error } = await useFetch(`${config.API_URL}/auth/authorise`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${config.API_KEY}`,
+      },
+      body: JSON.stringify({
+        username: username.value,
+        password: password.value,
+      }),
+    });
+
+    if (error.value) {
+      toast.add({
+        title: "Login Error!",
+        description: "Incorrect username or password.",
+        color: "error",
+      });
+      console.log(error.value);
+    } else if (data.value) {
+      login(data.value.message);
+      navigateTo("/dashboard");
+    } else {
+      toast.add({
+        title: "Unexpected Error",
+        description: "Please try again later.",
+        color: "warning",
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    toast.add({
+      title: "Server Error",
+      description: "Could not connect to the server.",
+      color: "error",
+    });
+  }
+}
 
 useHead({
   title: "Login — Neko-Love",
