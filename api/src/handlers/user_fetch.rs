@@ -4,10 +4,7 @@ use axum::{
     http::StatusCode,
 };
 
-use crate::{
-    app_state::AppState,
-    models::{response::ApiResponse, user::User},
-};
+use crate::{ApiResponse, app_state::AppState, models::user::User};
 
 pub async fn fetch_user(
     State(state): State<AppState>,

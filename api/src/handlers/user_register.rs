@@ -9,10 +9,7 @@ use axum_extra::{
 };
 use std::env;
 
-use crate::{
-    app_state::AppState,
-    models::{auth::RegisterRequest, response::ApiResponse},
-};
+use crate::{ApiResponse, app_state::AppState, models::auth::RegisterRequest};
 
 pub async fn register_user(
     State(state): State<AppState>,

@@ -1,13 +1,6 @@
-use axum::{
-    Json,
-    extract::State,
-    http::StatusCode,
-};
+use axum::{Json, extract::State, http::StatusCode};
 
-use crate::{
-    app_state::AppState,
-    models::{auth::AuthClaims, response::ApiResponse, user::User},
-};
+use crate::{ApiResponse, AuthClaims, app_state::AppState, models::user::User};
 
 pub async fn get_me(
     State(state): State<AppState>,
@@ -26,7 +19,7 @@ pub async fn get_me(
                     success: false,
                     url: None,
                 }),
-            )
+            );
         })?;
 
     Ok(Json(user))

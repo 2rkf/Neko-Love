@@ -6,7 +6,7 @@ mod services;
 
 use axum::extract::State;
 use axum::response::IntoResponse;
-use axum::routing::post;
+use axum::routing::{patch, post};
 use axum::{Json, middleware, routing};
 use axum::{
     Router,
@@ -24,7 +24,7 @@ use tower_http::cors::{Any, CorsLayer};
 
 use crate::app_state::create_state;
 use crate::handlers::images::get_random_image;
-use crate::handlers::{me::get_me, user_fetch::fetch_user, user_register::register_user};
+use crate::handlers::{me::get_me, user_authorise::authorise_user, user_fetch::fetch_user, user_register::register_user, user_update::update_user};
 use crate::middlewares::logging::log_requests;
 use crate::models::auth::{AuthClaims, Claims};
 use crate::models::keys::Keys;
@@ -70,9 +70,11 @@ async fn main() {
                 (StatusCode::METHOD_NOT_ALLOWED, Json(response))
             }),
         )
-        .route("/api/users", post(register_user))
-        .route("/api/users/{username}", get(fetch_user))
         .route("/api/me", get(get_me))
+        .route("/auth/authorise", post(authorise_user))
+        .route("/api/users/{username}", get(fetch_user))
+        .route("/api/users", post(register_user))
+        .route("/api/users/{username}", patch(update_user))
         .route(
             "/img/{filename}",
             get(|Path(filename): Path<String>| async move {
