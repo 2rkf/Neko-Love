@@ -28,7 +28,7 @@
       />
 
       <!-- Auth -->
-      <div v-if="status == 'authenticated'">
+      <div v-if="status == 'authenticated' && user">
         <UPopover :popper="{ placement: 'bottom-end' }" class="text-left">
           <UButton
             variant="ghost"

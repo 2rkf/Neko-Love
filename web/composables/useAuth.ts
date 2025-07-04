@@ -48,17 +48,15 @@ export function useAuth() {
 
         try {
             status.value = "loading";
-            const { data, error: fetchError } = await useFetch<User>(`${config.API_URL}/api/me`, {
+            const response = await $fetch(`${config.API_URL}/api/me`, {
+                method: "GET",
                 headers: {
                     Authorization: `Bearer ${token.value}`,
+                    "Content-Type": "application/json",
                 },
             });
 
-            if (fetchError.value) {
-                throw fetchError.value;
-            }
-
-            user.value = data.value;
+            user.value = response as User;
             status.value = "authenticated";
         } catch (err) {
             sessionToken.value = null;
