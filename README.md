@@ -7,7 +7,7 @@
 Neko-Love is a project with several semi-independent pieces such as:
 
 - [Neko-Love API (Axum)](https://github.com/2rkf/Neko-Love/tree/master/api)
-- [Neko-Love Discord Bot](https://github.com/2rkf/Neko-Love/tree/master/bot)
+- [Neko-Love Discord Bot (Twilight)](https://github.com/2rkf/Neko-Love/tree/master/bot)
 - [Neko-Love Docs (Vuepress)](https://github.com/2rkf/Neko-Love/tree/master/docs)
 - [Neko-Love Web (Nuxt)](https://github.com/2rkf/Neko-Love/tree/master/web)
 
