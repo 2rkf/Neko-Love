@@ -6,7 +6,9 @@ use axum::{
 };
 use axum_extra::headers::HeaderMap;
 
-use crate::{app_state::AppState, models::response::ApiResponse, services::auth_token_service::find_by_auth};
+use crate::{
+    app_state::AppState, models::response::ApiResponse, services::auth_token_service::find_by_auth,
+};
 
 /// Handler for GET /api/v1/{content_type}/{category}
 /// Returns a random image from the specified category
@@ -15,7 +17,8 @@ pub async fn get_random_image(
     State(state): State<AppState>,
     headers: HeaderMap,
 ) -> impl IntoResponse {
-    let auth_token = headers.get("Authorization")
+    let auth_token = headers
+        .get("Authorization")
         .and_then(|value| value.to_str().ok())
         .map(|s| s.to_string());
 
@@ -33,11 +36,23 @@ pub async fn get_random_image(
         }
     };
 
-    match find_by_auth(state.pool, token).await {
-        Ok(Json(user)) => user,
-        Err((status, res)) => {
-            return (status, res)
+    match find_by_auth(state.pool, token.clone()).await {
+        Ok(Json(_)) => {
+            match state.rate_limiter.check(token, false) {
+            Ok(_) => {}
+            Err(secs) => {
+                let response = ApiResponse {
+                    id: None,
+                    message: Some(format!("Rate limit exceeded. Try again in {} seconds.", secs)),
+                    success: false,
+                    status: StatusCode::TOO_MANY_REQUESTS.as_u16(),
+                    url: None,
+                };
+                return (StatusCode::TOO_MANY_REQUESTS, Json(response));
+            }
         }
+        }
+        Err((status, res)) => return (status, res),
     };
 
     match state
