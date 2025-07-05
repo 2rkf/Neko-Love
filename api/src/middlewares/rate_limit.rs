@@ -2,7 +2,9 @@ use std::{num::NonZeroU32, sync::Arc};
 
 use dashmap::DashMap;
 use governor::{
-    clock::{Clock, DefaultClock}, state::keyed::DefaultKeyedStateStore, Quota, RateLimiter
+    Quota, RateLimiter,
+    clock::{Clock, DefaultClock},
+    state::keyed::DefaultKeyedStateStore,
 };
 
 pub type TokenLimiter = RateLimiter<String, DefaultKeyedStateStore<String>, DefaultClock>;
@@ -30,7 +32,11 @@ impl RateLimiterStore {
     }
 
     pub fn check(&self, token: String, extend: bool) -> RateLimitStatus {
-        let limit = if extend { self.request_per_second * 5 } else { self.request_per_second };
+        let limit = if extend {
+            self.request_per_second * 5
+        } else {
+            self.request_per_second
+        };
         let limiter = self.inner.entry(token.to_string()).or_insert_with(|| {
             let quota = Quota::per_second(NonZeroU32::new(limit).unwrap());
             Arc::new(RateLimiter::keyed(quota))
@@ -41,11 +47,14 @@ impl RateLimiterStore {
                 is_allowed: true,
                 retry_after: None,
                 limit,
-                remaining: limit -1,
+                remaining: limit - 1,
                 reset_after: 1,
             },
             Err(nmd) => {
-                let wait_time = nmd.wait_time_from(DefaultClock::default().now()).as_secs().max(1);
+                let wait_time = nmd
+                    .wait_time_from(DefaultClock::default().now())
+                    .as_secs()
+                    .max(1);
 
                 RateLimitStatus {
                     is_allowed: false,
