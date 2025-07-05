@@ -26,7 +26,7 @@ All images are stored in a physical directory (`/assets`), which must be manuall
 2. **Add subdirectories** for content types:
    - `sfw/` (Safe For Work)
    - `nsfw/` (Not Safe For Work)
-3. **Organize images into categories** by creating subfolders (e.g., `neko`, `waifu`).
+3. **Organise images into categories** by creating subfolders (e.g., `neko`, `azurlane`).
 
 #### Example Structure:
 ```plaintext
