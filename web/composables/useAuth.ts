@@ -5,7 +5,7 @@ interface User {
     id: string;
     username: string;
     password: string;
-    auth_token: string;
+    api_key: string;
     nickname: string;
     email: string;
 }

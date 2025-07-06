@@ -11,9 +11,10 @@
       <div
         class="max-w-xl mx-auto bg-zinc-900 p-6 rounded-xl border border-zinc-700"
       >
-        <h2 class="text-2xl font-bold text-orange-200 mb-4">
-          Authorisation Token
-        </h2>
+        <div class="mb-4">
+          <h2 class="text-2xl font-bold text-orange-200">API Key</h2>
+          <small>You may use this key to interact with Neko-Love API.</small>
+        </div>
 
         <div class="space-y-4">
           <div class="flex gap-4">
@@ -26,19 +27,17 @@
             <UModal>
               <UButton
                 class="bg-zinc-700 hover:bg-zinc-600 text-white font-semibold cursor-pointer"
-                label="View Token"
+                label="View Key"
               />
 
               <template #content>
                 <UCard>
-                  <h3 class="text-lg font-semibold mb-4">
-                    Your Authorisation Token
-                  </h3>
+                  <h3 class="text-lg font-semibold mb-4">Your API Key</h3>
                   <UInput
-                    v-model="user.auth_token"
+                    v-model="user.api_key"
                     readonly
                     class="w-full bg-zinc-800 text-sm"
-                    placeholder="No token yet"
+                    placeholder="No API key yet"
                   />
                 </UCard>
               </template>
@@ -58,7 +57,7 @@ const toast = useToast();
 
 const generateToken = async () => {
   const newToken = generateAuthToken();
-  user.value.auth_token = newToken;
+  user.value.api_key = newToken;
 
   try {
     await useFetch(`/api/users/${user.value.username}`, {
@@ -66,7 +65,7 @@ const generateToken = async () => {
       headers: {
         Authorization: `Bearer ${token.value}`,
       },
-      body: { auth_token: newToken },
+      body: { api_key: newToken },
     });
 
     toast.add({
