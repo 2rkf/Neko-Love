@@ -34,12 +34,13 @@ pub async fn get_random_image(
         }
     };
 
-    match find_by_auth(state.pool.clone(), token.clone()).await {
+    let user = match find_by_auth(state.pool.clone(), token.clone()).await {
         Ok(Json(user)) => user,
         Err((status, res)) => return (status, res).into_response(),
     };
 
-    let rate_status = state.rate_limiter.check(token, false);
+    let extend = user.gold.unwrap_or(0) != 0;
+    let rate_status = state.rate_limiter.check(token, extend);
 
     let mut resp_headers = HeaderMap::new();
     resp_headers.insert("X-RateLimit-Limit", HeaderValue::from(rate_status.limit));

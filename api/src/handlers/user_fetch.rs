@@ -27,8 +27,10 @@ pub async fn fetch_user(
         })?;
     Ok(Json(User {
         auth_token: None,
+        blacklisted: user.blacklisted,
         created_at: user.created_at,
         email: None,
+        gold: user.gold,
         id: user.id,
         nickname: user.nickname,
         password: None,
