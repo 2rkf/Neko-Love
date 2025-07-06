@@ -7,7 +7,7 @@ pub async fn find_by_auth(
     pool: MySqlPool,
     token: String,
 ) -> Result<Json<User>, (StatusCode, Json<ApiResponse>)> {
-    let user = sqlx::query_as!(User, "SELECT * FROM users WHERE auth_token = ?", token)
+    let user = sqlx::query_as!(User, "SELECT * FROM users WHERE api_key = ?", token)
         .fetch_one(&pool)
         .await
         .map_err(|_| {

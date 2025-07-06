@@ -26,7 +26,7 @@ pub async fn fetch_user(
             );
         })?;
     Ok(Json(User {
-        auth_token: None,
+        api_key: None,
         blacklisted: user.blacklisted,
         created_at: user.created_at,
         email: None,

@@ -4,7 +4,7 @@ use serde::Serialize;
 #[derive(Serialize)]
 pub struct User {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub auth_token: Option<String>,
+    pub api_key: Option<String>,
     pub blacklisted: Option<i8>,
     pub created_at: NaiveDateTime,
     #[serde(skip_serializing_if = "Option::is_none")]

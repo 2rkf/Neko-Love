@@ -1,5 +1,5 @@
 use crate::{
-    app_state::AppState, models::response::ApiResponse, services::auth_token_service::find_by_auth,
+    app_state::AppState, models::response::ApiResponse, services::api_key_service::find_by_auth,
 };
 use axum::{
     Json,
@@ -15,12 +15,12 @@ pub async fn get_random_image(
     State(state): State<AppState>,
     headers: HeaderMap,
 ) -> impl IntoResponse {
-    let auth_token = headers
+    let api_key = headers
         .get("Authorization")
         .and_then(|value| value.to_str().ok())
         .map(|s| s.to_string());
 
-    let token = match auth_token {
+    let token = match api_key {
         Some(token) => token,
         None => {
             let response = ApiResponse {
