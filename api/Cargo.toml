@@ -13,7 +13,6 @@ chrono = { version = "0.4.41", features = ["serde"] }
 colored = "3.0.0"
 dashmap = "6.1.0"
 dotenv = "0.15.0"
-governor = { version = "0.10.0", features = ["jitter"] }
 jsonwebtoken = "9.3.1"
 mime_guess = "2.0.5"
 moka = { version = "0.12.10", features = ["future"] }
