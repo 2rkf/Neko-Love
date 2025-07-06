@@ -3,7 +3,7 @@ use sqlx::MySqlPool;
 
 use crate::{ApiResponse, models::user::User};
 
-pub async fn find_by_auth(
+pub async fn find_by_key(
     pool: MySqlPool,
     token: String,
 ) -> Result<Json<User>, (StatusCode, Json<ApiResponse>)> {

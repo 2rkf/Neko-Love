@@ -1,5 +1,5 @@
 use crate::{
-    app_state::AppState, models::response::ApiResponse, services::api_key_service::find_by_auth,
+    app_state::AppState, models::response::ApiResponse, services::api_key_service::find_by_key,
 };
 use axum::{
     Json,
@@ -34,7 +34,7 @@ pub async fn get_random_image(
         }
     };
 
-    let user = match find_by_auth(state.pool.clone(), token.clone()).await {
+    let user = match find_by_key(state.pool.clone(), token.clone()).await {
         Ok(Json(user)) => user,
         Err((status, res)) => return (status, res).into_response(),
     };
