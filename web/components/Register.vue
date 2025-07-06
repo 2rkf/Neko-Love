@@ -60,7 +60,9 @@
           </div>
 
           <div class="space-y-2">
-            <label class="text-lg font-medium text-orange-200">Confirm Password</label>
+            <label class="text-lg font-medium text-orange-200"
+              >Confirm Password</label
+            >
             <UInput
               v-model="retypePassword"
               type="password"
@@ -114,6 +116,12 @@ const submitForm = () => {
     username: username.value,
     email: email.value,
     password: password.value,
+  });
+
+  useToast().add({
+    description: "Account registration is currently disabled.",
+    color: "error",
+    title: "Oops!",
   });
 };
 
