@@ -65,7 +65,7 @@ pub async fn authorise_user(
                                 Json(ApiResponse {
                                     id: None,
                                     message: Some(t),
-                                    status: StatusCode::UNAUTHORIZED.as_u16(),
+                                    status: StatusCode::OK.as_u16(),
                                     success: true,
                                     url: None,
                                 }),
