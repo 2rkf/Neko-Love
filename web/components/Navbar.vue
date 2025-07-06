@@ -2,7 +2,6 @@
   <header
     class="flex items-center justify-between px-6 py-4 border-b bg-zinc-900 border-zinc-700"
   >
-    <!-- Logo and Title -->
     <NuxtLink to="/" class="flex items-center gap-2">
       <img
         src="/assets/logo.png"
@@ -15,9 +14,7 @@
       </h1>
     </NuxtLink>
 
-    <!-- Right Buttons -->
     <div class="flex items-center gap-4">
-      <!-- Discord -->
       <UButton
         variant="ghost"
         size="lg"
@@ -27,7 +24,6 @@
         target="_blank"
       />
 
-      <!-- Auth -->
       <div v-if="status == 'authenticated' && user">
         <UPopover :popper="{ placement: 'bottom-end' }" class="text-left">
           <UButton
