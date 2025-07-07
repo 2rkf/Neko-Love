@@ -54,7 +54,7 @@ pub async fn get_random_image(
         return (StatusCode::FORBIDDEN, Json(response)).into_response();
     }
 
-    let rate_status = state.rate_limiter.check(token, extend);
+    let rate_status = state.rate_limiter.check(user.username, extend);
 
     let mut resp_headers = HeaderMap::new();
     resp_headers.insert("X-RateLimit-Limit", HeaderValue::from(rate_status.limit));

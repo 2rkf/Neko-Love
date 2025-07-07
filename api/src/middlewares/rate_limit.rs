@@ -35,7 +35,7 @@ impl RateLimiterStore {
     }
 
     /// Checks if a request is allowed under the rate limit, updating the usage count.
-    pub fn check(&self, token: String, extend: bool) -> RateLimitStatus {
+    pub fn check(&self, user: String, extend: bool) -> RateLimitStatus {
         let limit = if extend {
             self.request_per_day * 10
         } else {
@@ -50,7 +50,7 @@ impl RateLimiterStore {
         let day_start = now_secs / 86400 * 86400;
         let mut usage_entry = self
             .usage
-            .entry(token.clone())
+            .entry(user.clone())
             .or_insert((day_start, 0, limit));
         let usage = usage_entry.value_mut();
 
