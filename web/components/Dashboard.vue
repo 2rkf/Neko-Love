@@ -2,9 +2,12 @@
   <div class="min-h-screen bg-zinc-800 text-zinc-100 noselect flex flex-col">
     <Navbar />
 
-    <main v-if="status === 'authenticated' && user" class="flex-grow px-6 py-10 space-y-8">
+    <main
+      v-if="status === 'authenticated' && user"
+      class="flex-grow px-6 py-10 space-y-8"
+    >
       <div class="text-center">
-        <h1 class="text-4xl font-extrabold text-white">Dashboard</h1>
+        <h1 class="text-4xl font-extrabold tracking-wide text-white">Dashboard</h1>
         <p class="text-zinc-400 mt-2">Welcome back, here's your overview.</p>
       </div>
 
@@ -49,7 +52,7 @@
       </div>
 
       <div class="text-center space-y-2">
-        <h2 class="text-3xl font-extrabold text-white">Tiers</h2>
+        <h2 class="text-3xl font-extrabold tracking-wider text-white">Tiers</h2>
         <p class="text-zinc-400 text-sm">
           Your current plan:
           <span
@@ -64,21 +67,18 @@
         </p>
       </div>
 
-      <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+      <div class="max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         <UCard
           :class="[
             'bg-zinc-900 border',
             user.gold
               ? 'border-zinc-700'
-              : 'border-orange-400 shadow-lg shadow-orange-200/10',
+              : 'border-orange-200 shadow-lg shadow-orange-200/10',
           ]"
         >
           <div class="p-6 space-y-4 text-center">
             <h3
-              :class="[
-                'text-2xl font-bold',
-                user.gold ? 'text-orange-200' : 'text-orange-300',
-              ]"
+              class="text-2xl font-bold text-orange-300"
             >
               Free Tier
             </h3>
@@ -86,15 +86,41 @@
               Access a limited set of endpoints and rate limits. Ideal for
               casual use.
             </p>
+            <div class="text-3xl font-bold text-orange-300 pt-2">$0</div>
             <ul class="text-left text-sm text-zinc-300 space-y-2 pt-4">
-              <li>✅ Access to public endpoints</li>
-              <li>✅ 1,000 requests per day</li>
-              <li>❌ No access to NSFW content</li>
-              <li>❌ No priority support</li>
+              <li class="flex items-start gap-2">
+                <UIcon
+                  name="i-lucide-check"
+                  class="text-orange-300 mt-0.5 w-4 h-4 shrink-0"
+                />
+                Access to public endpoints
+              </li>
+              <li class="flex items-start gap-2">
+                <UIcon
+                  name="i-lucide-check"
+                  class="text-orange-300 mt-0.5 w-4 h-4 shrink-0"
+                />
+                1,000 requests per day
+              </li>
+              <li class="flex items-start gap-2">
+                <UIcon
+                  name="i-lucide-x"
+                  class="text-zinc-500 mt-0.5 w-4 h-4 shrink-0"
+                />
+                No access to NSFW content
+              </li>
+              <li class="flex items-start gap-2">
+                <UIcon
+                  name="i-lucide-x"
+                  class="text-zinc-500 mt-0.5 w-4 h-4 shrink-0"
+                />
+                No priority support
+              </li>
             </ul>
+
             <div
               v-if="!user.gold"
-              class="mt-4 flex items-center justify-center gap-2 text-orange-300 font-semibold text-sm"
+              class="mt-8 flex items-center justify-center gap-2 text-orange-300 font-semibold text-sm"
             >
               You're currently a Free member!
             </div>
@@ -110,14 +136,7 @@
           ]"
         >
           <div class="p-6 space-y-4 text-center">
-            <h3
-              :class="[
-                'text-2xl font-bold',
-                user.gold ? 'text-yellow-300' : 'text-yellow-200',
-              ]"
-            >
-              Gold Tier
-            </h3>
+            <h3 class="text-2xl font-bold text-yellow-300">Gold Tier</h3>
 
             <p class="text-zinc-400 text-sm">
               Unlock full features and generous limits. Perfect for power users.
@@ -129,10 +148,34 @@
             </div>
 
             <ul class="text-left text-sm text-zinc-300 space-y-2 pt-4">
-              <li>✅ Full access to all endpoints</li>
-              <li>✅ 10,000 requests per day</li>
-              <li>✅ NSFW endpoint access</li>
-              <li>✅ Priority support & Discord role</li>
+              <li class="flex items-start gap-2">
+                <UIcon
+                  name="i-lucide-check"
+                  class="text-yellow-300 mt-0.5 w-4 h-4 shrink-0"
+                />
+                Full access to all endpoints
+              </li>
+              <li class="flex items-start gap-2">
+                <UIcon
+                  name="i-lucide-check"
+                  class="text-yellow-300 mt-0.5 w-4 h-4 shrink-0"
+                />
+                10,000 requests per day
+              </li>
+              <li class="flex items-start gap-2">
+                <UIcon
+                  name="i-lucide-check"
+                  class="text-yellow-300 mt-0.5 w-4 h-4 shrink-0"
+                />
+                NSFW endpoint access
+              </li>
+              <li class="flex items-start gap-2">
+                <UIcon
+                  name="i-lucide-check"
+                  class="text-yellow-300 mt-0.5 w-4 h-4 shrink-0"
+                />
+                Priority support & Discord role
+              </li>
             </ul>
 
             <UButton
@@ -141,12 +184,13 @@
               size="lg"
               label="Upgrade to Gold"
             />
-            <span
+            <div
               v-else
-              class="mt-4 inline-block text-yellow-400 font-semibold text-sm"
+              class="mt-8 flex items-center justify-center gap-2 text-yellow-400 font-semibold text-sm"
             >
-              You're already a Gold member ✨
-            </span>
+              <UIcon name="i-lucide-sparkles" class="w-4 h-4" />
+              You're already a Gold member!
+            </div>
           </div>
         </UCard>
       </div>
