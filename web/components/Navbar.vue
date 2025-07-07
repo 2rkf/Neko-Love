@@ -27,7 +27,6 @@
       <div v-if="status == 'authenticated' && user">
         <UPopover :popper="{ placement: 'bottom-end' }" class="text-left">
           <UButton
-            icon="i-lucide-user"
             variant="ghost"
             size="lg"
             class="text-orange-200 font-medium text-base cursor-pointer"
