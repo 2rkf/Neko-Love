@@ -3,14 +3,6 @@ export default defineNuxtConfig({
     css: ["~/assets/style.css"],
     devtools: { enabled: true },
     modules: ['@nuxt/ui', '@nuxt/eslint', "@pinia/nuxt"],
-    nitro: {
-        routeRules: {
-            "/api/**": {
-                proxy: "http://localhost:3030/api/**",
-            },
-            "api/_nuxt_icon": {},
-        },
-    },
     appConfig: {
         API_URL: process.env.API_URL,
         API_KEY: process.env.API_KEY,

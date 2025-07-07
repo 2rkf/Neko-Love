@@ -27,6 +27,7 @@
       <div v-if="status == 'authenticated' && user">
         <UPopover :popper="{ placement: 'bottom-end' }" class="text-left">
           <UButton
+            icon="i-lucide-user"
             variant="ghost"
             size="lg"
             class="text-orange-200 font-medium text-base cursor-pointer"
@@ -37,6 +38,7 @@
               <NuxtLink to="/dashboard">
                 <UButton
                   class="cursor-pointer"
+                  icon="i-lucide-layout-grid"
                   label="Dashboard"
                   color="primary"
                   variant="ghost"
@@ -46,6 +48,7 @@
                 </NuxtLink>
                 <UButton
                 class="cursor-pointer"
+                icon="i-lucide-log-out"
                 label="Logout"
                 color="error"
                 variant="ghost"
