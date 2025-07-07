@@ -11,6 +11,7 @@ use serde_json::Value;
 
 use crate::{ApiResponse, AuthClaims, app_state::AppState};
 
+/// Updates the user information.
 pub async fn update_user(
     State(state): State<AppState>,
     AuthClaims(_): AuthClaims,

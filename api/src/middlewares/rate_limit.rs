@@ -4,21 +4,29 @@ use std::{
     time::{SystemTime, UNIX_EPOCH},
 };
 
-pub struct RateLimitStatus {
-    pub is_allowed: bool,
-    pub retry_after: Option<u64>,
-    pub limit: u32,
-    pub remaining: u32,
-    pub reset_after: u64,
-}
-
+/// A thread-safe rate limiter that tracks and enforces request quotas per minute.
 #[derive(Clone)]
 pub struct RateLimiterStore {
-    pub request_per_minute: u32,
+    request_per_minute: u32,
     usage: Arc<DashMap<String, (u64, u32, u32)>>,
 }
 
+/// Represents the status of a rate limit check, including allowance status and quota information.
+pub struct RateLimitStatus {
+    /// Whether the current request is allowed under the rate limit.
+    pub is_allowed: bool,
+    /// Seconds until the next allowed request (only present when rate limited).
+    pub retry_after: Option<u64>,
+    /// The total request limit per time window.
+    pub limit: u32,
+    /// Remaining requests in the current time window.
+    pub remaining: u32,
+    /// Seconds until the current rate limit window resets.
+    pub reset_after: u64,
+}
+
 impl RateLimiterStore {
+    /// Creates a new `RateLimiterStore` with the specified requests per minute limit.
     pub fn new(request_per_minute: u32) -> Self {
         Self {
             request_per_minute,
@@ -26,6 +34,7 @@ impl RateLimiterStore {
         }
     }
 
+    /// Checks if a request is allowed under the rate limit, updating the usage count.
     pub fn check(&self, token: String, extend: bool) -> RateLimitStatus {
         let limit = if extend {
             self.request_per_minute * 5

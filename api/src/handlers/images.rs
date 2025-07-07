@@ -8,8 +8,9 @@ use axum::{
     response::IntoResponse,
 };
 
-/// Handler for GET /api/v1/{content_type}/{category}
-/// Returns a random image from the specified category
+/// Handler for GET `/api/v1/{content_type}/{category}`
+///
+/// Returns a random image from the specified category.
 pub async fn get_random_image(
     Path((content_type, category)): Path<(String, String)>,
     State(state): State<AppState>,

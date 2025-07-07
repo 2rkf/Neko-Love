@@ -3,6 +3,7 @@ use chrono::{DateTime, Local};
 use colored::Colorize;
 use std::time::{Instant, SystemTime};
 
+/// Axum middleware that logs HTTP requests with colored output including method, path, status, and duration.
 pub async fn log_requests(req: Request<Body>, next: Next) -> Response {
     let method = req.method().to_string();
     let path = req.uri().path().to_string();

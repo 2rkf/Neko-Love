@@ -6,6 +6,7 @@ use axum::{
 
 use crate::{ApiResponse, app_state::AppState, models::user::User};
 
+/// Gets the information of specified user. This endpoint returns the general information.
 pub async fn fetch_user(
     State(state): State<AppState>,
     Path(username): Path<String>,

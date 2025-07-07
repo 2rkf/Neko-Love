@@ -2,6 +2,7 @@ use axum::{Json, extract::State, http::StatusCode};
 
 use crate::{ApiResponse, AuthClaims, app_state::AppState, models::user::User};
 
+/// Gets the current authorised user information. This includes user's sensitive data.
 pub async fn get_me(
     State(state): State<AppState>,
     AuthClaims(claims): AuthClaims,

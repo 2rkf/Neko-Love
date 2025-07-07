@@ -3,6 +3,7 @@ use sqlx::MySqlPool;
 
 use crate::{ApiResponse, models::user::User};
 
+/// Finds a user by their API key in the database.
 pub async fn find_by_key(
     pool: MySqlPool,
     token: String,

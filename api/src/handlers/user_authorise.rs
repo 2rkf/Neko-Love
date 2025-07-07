@@ -13,6 +13,7 @@ use crate::{
     models::auth::{Claims, LoginRequest},
 };
 
+/// Authorises the user.
 pub async fn authorise_user(
     State(state): State<AppState>,
     TypedHeader(auth): TypedHeader<Authorization<Bearer>>,

@@ -15,6 +15,7 @@ use crate::{
     models::{auth::RegisterRequest, user::User},
 };
 
+/// Registers new user into the database.
 pub async fn register_user(
     State(state): State<AppState>,
     TypedHeader(auth): TypedHeader<Authorization<Bearer>>,
