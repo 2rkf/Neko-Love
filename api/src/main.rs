@@ -44,9 +44,10 @@ async fn main() {
         env::var("DATABASE_URL").unwrap_or_else(|_| "mysql://root@localhost/neko-love".into());
     let pool = MySqlPool::connect(&db_url).await.unwrap();
     let server_addr = env::var("SERVER_ADDRESS").unwrap_or_else(|_| "127.0.0.1:3030".into());
+    let redis_url = env::var("REDIS_URL").unwrap_or_else(|_| "redis://127.0.0.1/".into());
     let assets_path = PathBuf::from("./assets");
     let base_url = env::var("BASE_URL").unwrap_or_else(|_| "http://localhost:3030".into());
-    let state = create_state(pool, assets_path, base_url).unwrap();
+    let state = create_state(pool, assets_path, base_url, &redis_url).unwrap();
     let state_img = state.clone();
 
     let cors = CorsLayer::new()

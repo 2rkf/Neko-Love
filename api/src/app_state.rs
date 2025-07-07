@@ -18,7 +18,7 @@ pub struct AppState {
 }
 
 /// Creates a new shared AppState with database pool, assets path, and base URL
-pub fn create_state(pool: MySqlPool, assets_path: PathBuf, base_url: String) -> Result<AppState> {
+pub fn create_state(pool: MySqlPool, assets_path: PathBuf, base_url: String, redis_url: &str) -> Result<AppState> {
     let image_service = Arc::new(ImageService::new(assets_path.clone(), base_url)?);
 
     let cache = Arc::new(
@@ -28,7 +28,7 @@ pub fn create_state(pool: MySqlPool, assets_path: PathBuf, base_url: String) -> 
             .build(),
     );
 
-    let rate_limiter = RateLimiterStore::new(1000);
+    let rate_limiter = RateLimiterStore::new(redis_url, 1000);
 
     Ok(AppState {
         pool,
