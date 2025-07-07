@@ -41,6 +41,19 @@ pub async fn get_random_image(
     };
 
     let extend = user.gold.unwrap_or(0) != 0;
+
+    if !extend && content_type == "nsfw" {
+        let response = ApiResponse {
+            id: None,
+            message: Some("Access to this endpoint is restricted to Gold tier users.".into()),
+            status: StatusCode::FORBIDDEN.as_u16(),
+            success: false,
+            url: None,
+        };
+
+        return (StatusCode::FORBIDDEN, Json(response)).into_response();
+    }
+
     let rate_status = state.rate_limiter.check(token, extend);
 
     let mut resp_headers = HeaderMap::new();

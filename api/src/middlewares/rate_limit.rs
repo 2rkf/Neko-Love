@@ -4,10 +4,10 @@ use std::{
     time::{SystemTime, UNIX_EPOCH},
 };
 
-/// A thread-safe rate limiter that tracks and enforces request quotas per minute.
+/// A thread-safe rate limiter that tracks and enforces request quotas per day.
 #[derive(Clone)]
 pub struct RateLimiterStore {
-    request_per_minute: u32,
+    request_per_day: u32,
     usage: Arc<DashMap<String, (u64, u32, u32)>>,
 }
 
@@ -26,10 +26,10 @@ pub struct RateLimitStatus {
 }
 
 impl RateLimiterStore {
-    /// Creates a new `RateLimiterStore` with the specified requests per minute limit.
-    pub fn new(request_per_minute: u32) -> Self {
+    /// Creates a new `RateLimiterStore` with the specified requests per day limit.
+    pub fn new(request_per_day: u32) -> Self {
         Self {
-            request_per_minute,
+            request_per_day,
             usage: Arc::new(DashMap::new()),
         }
     }
@@ -37,24 +37,25 @@ impl RateLimiterStore {
     /// Checks if a request is allowed under the rate limit, updating the usage count.
     pub fn check(&self, token: String, extend: bool) -> RateLimitStatus {
         let limit = if extend {
-            self.request_per_minute * 5
+            self.request_per_day * 10
         } else {
-            self.request_per_minute
+            self.request_per_day
         };
 
         let now_secs = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .unwrap()
             .as_secs();
-        let minute = now_secs / 60 * 60;
+
+        let day_start = now_secs / 86400 * 86400;
         let mut usage_entry = self
             .usage
             .entry(token.clone())
-            .or_insert((minute, 0, limit));
+            .or_insert((day_start, 0, limit));
         let usage = usage_entry.value_mut();
 
-        if usage.0 != minute {
-            *usage = (minute, 0, limit);
+        if usage.0 != day_start {
+            *usage = (day_start, 0, limit);
         }
 
         if usage.1 < limit {
@@ -64,10 +65,10 @@ impl RateLimiterStore {
                 retry_after: None,
                 limit,
                 remaining: limit - usage.1,
-                reset_after: 60 - (now_secs - minute),
+                reset_after: 86400 - (now_secs - day_start),
             }
         } else {
-            let wait_time = 60 - (now_secs - usage.0);
+            let wait_time = 86400 - (now_secs - usage.0);
             RateLimitStatus {
                 is_allowed: false,
                 retry_after: Some(wait_time),
