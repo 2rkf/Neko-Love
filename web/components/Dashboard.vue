@@ -1,11 +1,8 @@
 <template>
-  <div
-    v-if="status === 'authenticated' && user"
-    class="min-h-screen bg-zinc-800 text-zinc-100 noselect flex flex-col"
-  >
+  <div class="min-h-screen bg-zinc-800 text-zinc-100 noselect flex flex-col">
     <Navbar />
 
-    <main class="flex-grow px-6 py-10 space-y-8">
+    <main v-if="status === 'authenticated' && user" class="flex-grow px-6 py-10 space-y-8">
       <div class="text-center">
         <h1 class="text-4xl font-extrabold text-white">Dashboard</h1>
         <p class="text-zinc-400 mt-2">Welcome back, here's your overview.</p>
