@@ -69,7 +69,7 @@ pub async fn get_random_image(
 
     if !rate_status.is_allowed {
         if let Some(retry_after) = rate_status.retry_after {
-            resp_headers.insert("Retry-After", HeaderValue::from(retry_after));
+            resp_headers.insert("X-RateLimit-Retry-After", HeaderValue::from(retry_after));
         }
 
         let response = ApiResponse {
