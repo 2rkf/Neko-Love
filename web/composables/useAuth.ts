@@ -1,17 +1,18 @@
 type AuthStatus = "authenticated" | "unauthenticated" | "loading";
 
 interface User {
-    created_at: Date;
-    id: string;
-    username: string;
-    password: string;
     api_key: string;
-    nickname: string;
+    blacklisted: 0 | 1;
+    created_at: Date;
     email: string;
+    gold: 0 | 1;
+    id: string;
+    nickname: string;
+    password: string;
+    username: string;
 }
 
 export function useAuth() {
-    const config = useAppConfig();
     const sessionToken = useCookie<string | null>("session_token");
     const token = ref<string | null>(sessionToken.value || null);
     const user = ref<User | null>(null);
@@ -48,7 +49,7 @@ export function useAuth() {
 
         try {
             status.value = "loading";
-            const response = await $fetch(`${config.API_URL}/api/me`, {
+            const response = await $fetch("/api/me", {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token.value}`,
