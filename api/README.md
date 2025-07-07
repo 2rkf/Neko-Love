@@ -13,7 +13,7 @@ A high-performance API for serving and managing anime-themed images (SFW & NSFW)
 ## Setup Guide
 
 ### Prerequisites
-- **Rust** (nightly version, `1.90.0-nightly` recommended)
+- **Rust** (stable version, `1.88.0` recommended)
 - **MariaDB** (or MySQL-compatible database)
 - A folder for storing image assets (see below)
 

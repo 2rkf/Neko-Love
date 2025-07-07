@@ -17,6 +17,6 @@ After cloning the repository, rename all `.env` files from each subdirectory and
 
 ## Developing
 
-**Node v22 and Rust 1.90 is recommended.**
+**Node v22 and Rust 1.88 is recommended.**
 
 > Please see each subdirectory for further instruction!
