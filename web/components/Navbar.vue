@@ -1,16 +1,16 @@
 <template>
   <header
-    class="flex items-center justify-between px-6 py-4 border-b bg-zinc-900 border-zinc-700"
+    class="flex items-center justify-between px-6 py-4 bg-white/70 backdrop-blur border-b border-pink-200 shadow-md sticky top-0 z-50 animate-slide-in-top"
   >
     <NuxtLink to="/" class="flex items-center gap-2">
       <img
         src="/assets/logo.png"
         alt="Logo"
-        class="h-10 w-10"
+        class="h-10 w-10 animate-wiggle-slow"
         draggable="false"
       />
-      <h1 class="text-2xl font-extrabold tracking-wide">
-        Neko-<span class="text-orange-200">Love</span>
+      <h1 class="text-2xl font-extrabold text-pink-600 tracking-wide">
+        Neko-<span class="text-orange-400">Love</span>
       </h1>
     </NuxtLink>
 
@@ -20,7 +20,7 @@
         size="lg"
         label="Discord Server"
         to="https://discord.gg/Az8RWJJ6fT"
-        class="font-medium text-base cursor-pointer text-orange-200"
+        class="font-medium text-base cursor-pointer text-orange-400 hover:scale-105 transition"
         target="_blank"
       />
 
@@ -30,11 +30,12 @@
             icon="i-lucide-user"
             variant="ghost"
             size="lg"
-            class="text-orange-200 font-medium text-base cursor-pointer"
-            >{{ user.nickname }}</UButton
+            class="text-orange-500 font-medium text-base cursor-pointer"
           >
+            {{ user.nickname }}
+          </UButton>
           <template #content>
-            <div class="p-4 rounded-lg shadow-lg w-48 space-y-2">
+            <div class="p-4 rounded-lg bg-white shadow-xl w-48 space-y-2">
               <NuxtLink to="/dashboard">
                 <UButton
                   class="cursor-pointer"
@@ -44,9 +45,9 @@
                   variant="ghost"
                   size="sm"
                   block
-                  />
-                </NuxtLink>
-                <UButton
+                />
+              </NuxtLink>
+              <UButton
                 class="cursor-pointer"
                 icon="i-lucide-log-out"
                 label="Logout"
@@ -67,7 +68,7 @@
           variant="ghost"
           size="lg"
           label="Login"
-          class="font-medium text-base cursor-pointer text-orange-200"
+          class="font-medium text-base cursor-pointer text-orange-400 hover:scale-105 transition"
         />
       </div>
       <USkeleton v-else class="h-4 w-10" />

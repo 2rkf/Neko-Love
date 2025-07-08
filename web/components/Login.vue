@@ -1,48 +1,54 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-zinc-800 text-zinc-100 noselect">
+  <div class="min-h-screen flex flex-col bg-gradient-to-b from-pink-100 via-pink-50 to-rose-100 font-[Nunito] noselect">
     <Navbar />
+
     <main class="flex-grow flex items-center justify-center px-4 py-16">
       <UCard
-        class="w-full max-w-md shadow-lg border border-zinc-700 bg-zinc-900"
-        :ui="{ body: 'p-6s space-y-6 text-left' }"
+        class="w-full max-w-md shadow-xl border-pink-200 bg-white/80 backdrop-blur animate-fade-in-up"
+        :ui="{ body: 'p-8 space-y-6 text-left' }"
       >
+        <!-- Header -->
         <div class="text-center space-y-2">
-          <h2 class="text-4xl font-extrabold text-white">Login</h2>
-          <p class="text-zinc-400">Welcome back, please sign in to continue.</p>
+          <h2 class="text-4xl font-extrabold text-pink-600 drop-shadow-pink">Login</h2>
+          <p class="text-pink-700">Please sign in to continue</p>
         </div>
 
+        <!-- Form -->
         <form class="space-y-4">
+          <!-- Username -->
           <div class="space-y-2">
-            <label class="text-lg font-medium text-orange-200">Username</label>
+            <label class="text-base font-semibold text-pink-600">Username</label>
             <UInput
               v-model="username"
               size="lg"
               placeholder="Enter your username"
               color="primary"
-              class="w-full"
+              class="w-full rounded-xl"
               :ui="{
-                base: 'bg-zinc-900 text-white placeholder-zinc-400',
-                wrapper: 'focus-within:ring-2 focus-within:ring-orange-300',
+                base: 'bg-white text-pink-700 placeholder-pink-300',
+                wrapper: 'focus-within:ring-2 focus-within:ring-pink-300 rounded-xl',
               }"
             />
           </div>
 
+          <!-- Password -->
           <div class="space-y-2">
-            <label class="text-lg font-medium text-orange-200">Password</label>
+            <label class="text-base font-semibold text-pink-600">Password</label>
             <UInput
               v-model="password"
               type="password"
               size="lg"
               placeholder="Enter your password"
               color="primary"
-              class="w-full"
+              class="w-full rounded-xl"
               :ui="{
-                base: 'bg-zinc-900 text-white placeholder-zinc-400',
-                wrapper: 'focus-within:ring-2 focus-within:ring-orange-300',
+                base: 'bg-white text-pink-700 placeholder-pink-300',
+                wrapper: 'focus-within:ring-2 focus-within:ring-pink-300 rounded-xl',
               }"
             />
           </div>
 
+          <!-- Buttons -->
           <div class="pt-4 space-y-4">
             <UButton
               @click.prevent="authorise"
@@ -50,7 +56,7 @@
               size="lg"
               color="primary"
               label="Login"
-              class="w-full font-semibold cursor-pointer"
+              class="w-full font-bold bg-pink-400 hover:bg-pink-300 text-white cursor-pointer"
             />
             <UButton
               @click="toRegister"
@@ -59,7 +65,7 @@
               size="lg"
               color="primary"
               label="Create an Account"
-              class="w-full font-semibold cursor-pointer"
+              class="w-full font-bold text-pink-600 border-pink-300 hover:bg-pink-50 cursor-pointer"
             />
           </div>
         </form>
@@ -92,11 +98,10 @@ async function authorise() {
 
     if (error.value) {
       toast.add({
-        title: "Login Error!",
+        title: "Login Error",
         description: "Incorrect username or password.",
         color: "error",
       });
-      console.log(error.value);
     } else if (data.value) {
       login(data.value.message);
       navigateTo("/dashboard");
@@ -121,7 +126,7 @@ useHead({
   title: "Login — Neko-Love",
   meta: [
     { name: "description", content: "Login to Neko-Love." },
-    { name: "theme-color", content: "#ffbb88" },
+    { name: "theme-color", content: "#ffd8e0" },
   ],
 });
 </script>

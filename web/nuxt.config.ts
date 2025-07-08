@@ -3,6 +3,9 @@ export default defineNuxtConfig({
     css: ["~/assets/style.css"],
     devtools: { enabled: true },
     modules: ['@nuxt/ui', '@nuxt/eslint', "@pinia/nuxt"],
+    ui: {
+        colorMode: false,
+    },
     appConfig: {
         API_URL: process.env.API_URL,
         API_KEY: process.env.API_KEY,
