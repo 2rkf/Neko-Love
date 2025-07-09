@@ -1,6 +1,9 @@
 # Stage 1: Build the Rust application
 FROM rust:1.88-slim-bullseye AS builder
 
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
+
 # Set working directory to the api directory
 WORKDIR /usr/src/api
 
