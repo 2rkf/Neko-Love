@@ -11,7 +11,7 @@ WORKDIR /usr/src/api
 COPY . .
 
 # Ensure we're building from the api directory
-WORKDIR /usr/src/api/api
+WORKDIR /usr/src/api
 
 # Build the release version
 RUN cargo build --release
@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy the compiled binary from the builder stage
-COPY --from=builder /usr/src/api/api/target/release/neko-love-api /usr/local/bin/neko-love-api
+COPY --from=builder /usr/src/api/target/release/neko-love-api /usr/local/bin/neko-love-api
 
 # Run the application
 CMD ["/usr/local/bin/neko-love-api"]
