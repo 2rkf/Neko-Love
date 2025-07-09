@@ -1,27 +1,32 @@
-# Use Rust official image for building
-FROM rust:1.82 AS builder
+# Stage 1: Build the Rust application
+FROM rust:1.88-slim-bullseye AS builder
 
-WORKDIR /app
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
 
-# Copy dependency files to cache dependencies
-COPY Cargo.toml Cargo.lock ./
-RUN mkdir src && echo "fn main() {}" > src/main.rs
-RUN cargo build --release
-RUN rm -rf src
+# Set working directory to the bot directory
+WORKDIR /usr/src/bot
 
-# Copy source code
+# Copy the entire repository
 COPY . .
+
+# Ensure we're building from the bot directory
+WORKDIR /usr/src/bot
+
+# Build the release version
 RUN cargo build --release
 
-# Final stage: minimal runtime image
-FROM debian:bookworm-slim
-RUN apt-get update && \
-    apt-get install -y \
-    pkg-config \
+# Stage 2: Create the runtime image
+FROM debian:bullseye-slim
+
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y \
     libssl-dev \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
-COPY --from=builder /app/target/release/neko-bot /usr/local/bin/neko-bot
 
-WORKDIR /app
+# Copy the compiled binary from the builder stage
+COPY --from=builder /usr/src/bot/target/release/neko-bot /usr/local/bin/neko-bot
 
-ENTRYPOINT ["/usr/local/bin/neko-bot"]
+# Run the application
+CMD ["/usr/local/bin/neko-bot"]
