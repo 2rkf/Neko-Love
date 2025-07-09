@@ -1,42 +1,29 @@
-# Stage 1: Build the Rust application
-FROM rustlang/rust:nightly AS builder
+# Use the official Rust 1.88 slim image as the base for building
+FROM rust:1.88-slim-bullseye AS builder
 
-# Create a new empty shell project
-WORKDIR /usr/src/app
-RUN USER=root cargo new --bin neko-love-api
-WORKDIR /usr/src/app/neko-love-api
+# Set the working directory
+WORKDIR /usr/src/api
 
-# Copy over the manifests
-COPY ./Cargo.toml ./Cargo.toml
-COPY ./Cargo.lock ./Cargo.lock
+# Copy the project files
+COPY ./api .
 
-# This build step will cache your dependencies
-RUN cargo build --release
-RUN rm src/*.rs
-
-# Copy your source tree
-COPY ./src ./src
-
-# Build for release
+# Build the release version
 RUN cargo build --release
 
-# Final stage using a slim image
-FROM debian:buster-slim
+# Create a new stage for the runtime
+FROM debian:bullseye-slim
 
-# Install OpenSSL - it's dynamically linked by some of our dependencies
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends openssl ca-certificates && \
-    rm -rf /var/lib/apt/lists/*
+# Install any necessary runtime dependencies
+RUN apt-get update && apt-get install -y \
+    libssl-dev \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy the compiled binary from the builder stage
-COPY --from=builder /usr/src/app/neko-love-api/target/release/neko-love-api /usr/local/bin/neko-love-api
+COPY --from=builder /usr/src/api/target/release/neko-love-api /usr/local/bin/neko-love-api
 
-# Set the environment variable for production
-# ENV RUST_LOG=info
-# ENV APP_ENVIRONMENT=production
+# Expose the port Axum typically uses (adjust if your app uses a different port)
+EXPOSE 3000
 
-# Expose the port the app runs on
-EXPOSE 3030
-
-# Run the binary
+# Set the command to run the application
 CMD ["neko-love-api"]
