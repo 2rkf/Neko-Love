@@ -6,12 +6,13 @@ edition = "2024"
 [dependencies]
 anyhow = "1.0.98"
 argon2 = "0.5.3"
+aws-config = "1.8.1"
+aws-sdk-s3 = "1.96.0"
 axum = "0.8.4"
 axum-extra = { version = "0.10.1", features = ["typed-header"] }
 bytes = "1.10.1"
 chrono = { version = "0.4.41", features = ["serde"] }
 colored = "3.0.0"
-dashmap = "6.1.0"
 dotenv = "0.15.0"
 jsonwebtoken = "9.3.1"
 mime_guess = "2.0.5"
