@@ -54,7 +54,11 @@ impl ImageService {
         if let Some(contents) = response.contents {
             for obj in contents {
                 if let Some(key) = obj.key {
-                    if key.ends_with(".jpg") || key.ends_with(".png") {
+                    if key.ends_with(".jpg")
+                        || key.ends_with(".png")
+                        || key.ends_with(".jpeg")
+                        || key.ends_with(".gif") | key.ends_with(".webp")
+                    {
                         let filename = key
                             .rsplit('/')
                             .next()
