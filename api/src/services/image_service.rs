@@ -1,39 +1,37 @@
 use anyhow::{Context, Result};
+use aws_sdk_s3::Client;
 use rand::seq::IndexedRandom;
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::sync::Arc;
 
-/// Service for managing and serving images from the assets directory
+/// Service for managing and serving images from the assets directory.
 pub struct ImageService {
-    assets_path: PathBuf,
     base_url: String,
+    s3_client: Arc<Client>,
+    bucket: String,
 }
 
 impl ImageService {
-    /// Creates a new ImageService with the given assets path and base URL
-    pub fn new(assets_path: impl AsRef<Path>, base_url: String) -> Result<Self> {
-        let assets_path = assets_path.as_ref().canonicalize().with_context(|| {
-            format!("Failed to resolve assets path: {:?}", assets_path.as_ref())
-        })?;
-
-        if !assets_path.exists() {
-            anyhow::bail!("Assets directory does not exist: {:?}", assets_path);
-        }
-
-        Ok(Self {
+    /// Creates a new ImageService with the S3 client and base URL.
+    pub fn new(base_url: String, s3_client: Arc<Client>, bucket: String) -> Self {
+        Self {
             base_url,
-            assets_path,
-        })
+            s3_client,
+            bucket,
+        }
     }
 
-    /// Builds a full URL for an image given its category and filename
+    /// Builds a full URL for an image given its category and filename.
     pub fn build_image_url(&self, filename: &str) -> String {
         format!("{}/img/{}", self.base_url, filename)
     }
 
-    /// Gets a random image from the specified category
-    pub fn get_random_image(&self, content_type: &str, category: &str) -> Result<(String, String)> {
-         let content_dir = match content_type {
+    /// Gets a random image from the specified category.
+    pub async fn get_random_image(
+        &self,
+        content_type: &str,
+        category: &str,
+    ) -> Result<(String, String)> {
+        let content_dir = match content_type {
             "sfw" | "nsfw" => content_type,
             _ => anyhow::bail!("Invalid content type. Must be 'sfw' or 'nsfw'"),
         };
@@ -42,25 +40,32 @@ impl ImageService {
             anyhow::bail!("Invalid category name: {}", category);
         }
 
-        let category_path = self.assets_path.join(content_dir).join(category);
-
-        if !category_path.exists() {
-            anyhow::bail!("Category directory does not exist: {:?}", category_path);
-        }
-
-        let entries = fs::read_dir(&category_path)?;
+        let prefix = format!("assets/{}/{}", content_dir, category);
+        let response = self
+            .s3_client
+            .list_objects_v2()
+            .bucket(&self.bucket)
+            .prefix(&prefix)
+            .send()
+            .await
+            .context("Failed to list objects from S3")?;
 
         let mut images = Vec::new();
-        for entry in entries {
-            let entry = entry?;
-            let path = entry.path();
-            if path.is_file() {
-                if let Some(filename) = path.file_name().and_then(|n| n.to_str()) {
-                    let id = path.file_stem()
-                        .and_then(|s| s.to_str())
-                        .unwrap_or_default()
-                        .to_string();
-                    images.push((id, filename.to_string()));
+        if let Some(contents) = response.contents {
+            for obj in contents {
+                if let Some(key) = obj.key {
+                    if key.ends_with(".jpg") || key.ends_with(".png") {
+                        let filename = key
+                            .rsplit('/')
+                            .next()
+                            .ok_or_else(|| anyhow::anyhow!("Invalid key format"))?
+                            .to_string();
+                        let id = filename
+                            .rsplit_once('.')
+                            .map(|(stem, _)| stem.to_string())
+                            .unwrap_or(filename.clone());
+                        images.push((id, filename));
+                    }
                 }
             }
         }

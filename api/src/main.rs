@@ -18,7 +18,6 @@ use dotenv::dotenv;
 use jsonwebtoken::{Validation, decode};
 use sqlx::MySqlPool;
 use std::env;
-use std::path::PathBuf;
 use std::sync::LazyLock;
 use tower_http::cors::{Any, CorsLayer};
 
@@ -45,9 +44,11 @@ async fn main() {
     let pool = MySqlPool::connect(&db_url).await.unwrap();
     let server_addr = env::var("SERVER_ADDRESS").unwrap_or_else(|_| "127.0.0.1:3030".into());
     let redis_url = env::var("REDIS_URL").unwrap_or_else(|_| "redis://127.0.0.1/".into());
-    let assets_path = PathBuf::from("./assets");
+    let s3_bucket = env::var("S3_BUCKET").unwrap_or_else(|_| "neko-love-assets".into());
+    let access_key_id = env::var("AWS_ACCESS_KEY_ID").expect("Missing 'AWS_ACCESS_KEY_ID'");
+    let secret_access_key = env::var("AWS_SECRET_ACCESS_KEY").expect("Missing 'AWS_SECRET_ACCESS_KEY'");
     let base_url = env::var("BASE_URL").unwrap_or_else(|_| "http://localhost:3030".into());
-    let state = create_state(pool, assets_path, base_url, &redis_url).unwrap();
+    let state = create_state(pool, base_url, &redis_url, s3_bucket, access_key_id, secret_access_key).await.unwrap();
     let state_img = state.clone();
 
     let cors = CorsLayer::new()

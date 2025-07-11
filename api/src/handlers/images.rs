@@ -89,6 +89,7 @@ pub async fn get_random_image(
     match state
         .image_service
         .get_random_image(&content_type, &category)
+        .await
     {
         Ok((id, filename)) => {
             let response = ApiResponse {

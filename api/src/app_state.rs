@@ -1,25 +1,59 @@
 use anyhow::Result;
+use aws_config::BehaviorVersion;
+use aws_sdk_s3::Client;
+use aws_sdk_s3::config::Credentials;
 use bytes::Bytes;
 use moka::future::Cache;
 use sqlx::MySqlPool;
-use std::path::PathBuf;
+use std::env;
 use std::sync::Arc;
 
 use crate::middlewares::rate_limit::RateLimiterStore;
 use crate::services::image_service::ImageService;
 
-/// Shared application state containing database pool, cache, and services
+/// Shared application state containing database pool, cache, and services.
 #[derive(Clone)]
 pub struct AppState {
     pub pool: MySqlPool,
     pub cache: Arc<Cache<String, Bytes>>,
     pub image_service: Arc<ImageService>,
     pub rate_limiter: RateLimiterStore,
+    pub s3_bucket: String,
+    pub s3_client: Arc<Client>,
 }
 
-/// Creates a new shared AppState with database pool, assets path, and base URL
-pub fn create_state(pool: MySqlPool, assets_path: PathBuf, base_url: String, redis_url: &str) -> Result<AppState> {
-    let image_service = Arc::new(ImageService::new(assets_path.clone(), base_url)?);
+/// Creates a new shared AppState.
+pub async fn create_state(
+    pool: MySqlPool,
+    base_url: String,
+    redis_url: &str,
+    bucket: String,
+    access_key_id: String,
+    secret_access_key: String,
+) -> Result<AppState> {
+    let endpoint = env::var("AWS_ENDPOINT").expect("Missing 'AWS_ENDPOINT'");
+    let region_str = env::var("AWS_REGION").expect("Missing 'AWS_REGION'");
+    let region = aws_config::Region::new(region_str);
+
+    let config = aws_config::defaults(BehaviorVersion::latest())
+        .region(region.clone())
+        .endpoint_url(endpoint)
+        .credentials_provider(Credentials::new(
+            access_key_id,
+            secret_access_key,
+            None,
+            None,
+            "neko-love",
+        ))
+        .load()
+        .await;
+    let s3_client = Arc::new(Client::new(&config));
+
+    let image_service = Arc::new(ImageService::new(
+        base_url,
+        s3_client.clone(),
+        bucket.clone(),
+    ));
 
     let cache = Arc::new(
         Cache::builder()
@@ -35,5 +69,7 @@ pub fn create_state(pool: MySqlPool, assets_path: PathBuf, base_url: String, red
         cache,
         image_service,
         rate_limiter,
+        s3_bucket: bucket.clone(),
+        s3_client,
     })
 }
