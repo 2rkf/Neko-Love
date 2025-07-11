@@ -40,7 +40,7 @@ impl ImageService {
             anyhow::bail!("Invalid category name: {}", category);
         }
 
-        let prefix = format!("assets/{}/{}", content_dir, category);
+        let prefix = format!("assets/{}/{}/", content_dir, category);
         let response = self
             .s3_client
             .list_objects_v2()

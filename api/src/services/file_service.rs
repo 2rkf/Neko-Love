@@ -1,69 +1,103 @@
-use axum::{body::Body, extract::State, http::StatusCode, response::Response};
+use std::env;
+
+use anyhow::Context;
+use aws_sdk_s3::Client as S3Client;
+use axum::{
+    body::Body,
+    extract::{Path, State},
+    http::StatusCode,
+    response::Response,
+};
 use mime_guess::from_path;
 
 use crate::app_state::AppState;
 use crate::models::response::ApiResponse;
 
-/// Serves a file from either `/assets/sfw` or `/assets/nsfw` subdirectories.
+fn get_categories() -> Vec<String> {
+    let categories_str = env::var("CATEGORIES").expect("Missing 'CATEGORIES'");
+    categories_str
+        .split(',')
+        .map(|s| s.trim().to_string())
+        .collect()
+}
+
+/// Serves a file from S3 bucket at /assets/{content_type}/{category}/{filename}.jpg
 pub async fn serve_file(
     State(state): State<AppState>,
-    filename: String,
+    Path(filename): Path<String>,
 ) -> Result<Response<Body>, anyhow::Error> {
-    let mime = from_path(&filename).first_or_octet_stream();
+    let content_types = ["sfw", "nsfw"];
+    let categories = get_categories();
 
     if let Some(cached) = state.cache.get(&filename).await {
+        let mime = from_path(&filename).first_or_octet_stream();
         return Ok(Response::builder()
             .header("Content-Type", mime.as_ref())
             .body(Body::from(cached))
             .unwrap());
     }
 
-    let content_types = ["sfw", "nsfw"];
     for content_type in content_types.iter() {
-        let prefix = format!("assets/{}", content_type);
-        let response = state
-            .s3_client
-            .list_objects_v2()
-            .bucket(state.s3_bucket.clone())
-            .prefix(&prefix)
-            .send()
-            .await?;
+        for category in categories.iter() {
+            let s3_key = format!("assets/{}/{}/{}", content_type, category, filename);
 
-        for obj in response.contents() {
-            if let Some(key) = obj.key() {
-                if key.ends_with(&filename) {
-                    let get_obj = state
-                        .s3_client
-                        .get_object()
-                        .bucket(state.s3_bucket)
-                        .key(key)
-                        .send()
-                        .await?;
-
-                    let bytes = get_obj.body.collect().await?.into_bytes();
-
-                    let response = Response::builder()
+            match try_fetch_s3_object(&state.s3_client, &state.s3_bucket, &s3_key).await {
+                Ok(bytes) => {
+                    println!("Found file at S3 key: {}", s3_key);
+                    // Cache the file
+                    state.cache.insert(filename.clone(), bytes.clone()).await;
+                    let mime = from_path(&filename).first_or_octet_stream();
+                    return Ok(Response::builder()
                         .header("Content-Type", mime.as_ref())
-                        .body(Body::from(bytes.clone()))
-                        .unwrap();
-
-                    state.cache.insert(filename.clone(), bytes).await;
-                    return Ok(response);
+                        .body(Body::from(bytes))
+                        .unwrap());
+                }
+                Err(_) => {
+                    continue;
                 }
             }
         }
     }
 
+    Ok(build_not_found_response(&filename))
+}
+
+/// Attempts to fetch an object from S3
+async fn try_fetch_s3_object(
+    s3_client: &S3Client,
+    bucket: &str,
+    key: &str,
+) -> Result<bytes::Bytes, anyhow::Error> {
+    let get_obj = s3_client
+        .get_object()
+        .bucket(bucket)
+        .key(key)
+        .send()
+        .await
+        .context(format!("Failed to fetch object from S3: {}", key))?;
+
+    let bytes = get_obj
+        .body
+        .collect()
+        .await
+        .context(format!("Failed to read S3 object body: {}", key))?
+        .into_bytes();
+
+    Ok(bytes)
+}
+
+/// Builds a 404 response for file not found
+fn build_not_found_response(filename: &str) -> Response<Body> {
     let response = ApiResponse {
         id: None,
-        message: Some("File not found.".into()),
+        message: Some(format!("File '{}' not found.", filename)),
         success: false,
         status: StatusCode::NOT_FOUND.as_u16(),
         url: None,
     };
 
-    Ok(Response::builder()
+    Response::builder()
         .status(StatusCode::NOT_FOUND)
-        .body(Body::from(serde_json::to_string(&response)?))
-        .unwrap())
+        .body(Body::from(serde_json::to_string(&response).unwrap()))
+        .unwrap()
 }

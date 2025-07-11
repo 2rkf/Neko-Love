@@ -82,7 +82,7 @@ async fn main() {
         .route(
             "/img/{filename}",
             get(|Path(filename): Path<String>| async move {
-                match serve_file(State(state_img), filename).await {
+                match serve_file(State(state_img), Path(filename)).await {
                     Ok(res) => res,
                     Err(_) => {
                         (StatusCode::INTERNAL_SERVER_ERROR, "Internal server error").into_response()
