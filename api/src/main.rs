@@ -18,6 +18,7 @@ use dotenv::dotenv;
 use jsonwebtoken::{Validation, decode};
 use sqlx::MySqlPool;
 use std::env;
+use std::net::SocketAddr;
 use std::sync::LazyLock;
 use tower_http::cors::{Any, CorsLayer};
 
@@ -42,7 +43,8 @@ async fn main() {
     let db_url =
         env::var("DATABASE_URL").unwrap_or_else(|_| "mysql://root@localhost/neko-love".into());
     let pool = MySqlPool::connect(&db_url).await.unwrap();
-    let server_addr = env::var("SERVER_ADDRESS").unwrap_or_else(|_| "127.0.0.1:3030".into());
+    let port: u16 = env::var("PORT").unwrap_or("3030".into()).parse().expect("Missing 'PORT'");
+    let ipv6 = SocketAddr::from(([0, 0, 0, 0, 0, 0, 0, 0], port));
     let redis_url = env::var("REDIS_URL").unwrap_or_else(|_| "redis://127.0.0.1/".into());
     let s3_bucket = env::var("S3_BUCKET").unwrap_or_else(|_| "neko-love-assets".into());
     let access_key_id = env::var("AWS_ACCESS_KEY_ID").expect("Missing 'AWS_ACCESS_KEY_ID'");
@@ -103,7 +105,7 @@ async fn main() {
         .layer(cors)
         .with_state(state);
 
-    let listener = tokio::net::TcpListener::bind(server_addr).await.unwrap();
+    let listener = tokio::net::TcpListener::bind(&ipv6).await.unwrap();
     println!(
         "Server running on {}",
         listener.local_addr().unwrap().to_string()
