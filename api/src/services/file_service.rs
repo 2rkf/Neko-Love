@@ -13,21 +13,16 @@ use mime_guess::from_path;
 use crate::app_state::AppState;
 use crate::models::response::ApiResponse;
 
-fn get_categories() -> Vec<String> {
-    let categories_str = env::var("CATEGORIES").expect("Missing 'CATEGORIES'");
-    categories_str
-        .split(',')
-        .map(|s| s.trim().to_string())
-        .collect()
-}
 
-/// Serves a file from S3 bucket at /assets/{content_type}/{category}/{filename}.jpg
+
+/// Serves a file from S3 bucket at /assets/{content_type}/{category}/{filename}
 pub async fn serve_file(
     State(state): State<AppState>,
     Path(filename): Path<String>,
 ) -> Result<Response<Body>, anyhow::Error> {
     let content_types = ["sfw", "nsfw"];
-    let categories = get_categories();
+    let categories_str = env::var("CATEGORIES").expect("Missing 'CATEGORIES'");
+    let categories: Vec<&str> = categories_str.split(",").collect();
 
     if let Some(cached) = state.cache.get(&filename).await {
         let mime = from_path(&filename).first_or_octet_stream();
@@ -44,7 +39,6 @@ pub async fn serve_file(
             match try_fetch_s3_object(&state.s3_client, &state.s3_bucket, &s3_key).await {
                 Ok(bytes) => {
                     println!("Found file at S3 key: {}", s3_key);
-                    // Cache the file
                     state.cache.insert(filename.clone(), bytes.clone()).await;
                     let mime = from_path(&filename).first_or_octet_stream();
                     return Ok(Response::builder()
