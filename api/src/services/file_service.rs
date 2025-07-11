@@ -13,8 +13,6 @@ use mime_guess::from_path;
 use crate::app_state::AppState;
 use crate::models::response::ApiResponse;
 
-
-
 /// Serves a file from S3 bucket at /assets/{content_type}/{category}/{filename}
 pub async fn serve_file(
     State(state): State<AppState>,
