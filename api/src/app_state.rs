@@ -57,8 +57,8 @@ pub async fn create_state(
 
     let cache = Arc::new(
         Cache::builder()
-            .max_capacity(1000)
-            .time_to_live(std::time::Duration::from_secs(300))
+            .max_capacity(10000)
+            .time_to_live(std::time::Duration::from_secs(3600))
             .build(),
     );
 
