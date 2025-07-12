@@ -36,7 +36,6 @@ pub async fn serve_file(
 
             match try_fetch_s3_object(&state.s3_client, &state.s3_bucket, &s3_key).await {
                 Ok(bytes) => {
-                    println!("Found file at S3 key: {}", s3_key);
                     state.cache.insert(filename.clone(), bytes.clone()).await;
                     let mime = from_path(&filename).first_or_octet_stream();
                     return Ok(Response::builder()
