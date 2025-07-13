@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-7ad5d2c4","path":"/docs/FAQ.html","title":"Frequently Asked Question(s)","lang":"en-GB","frontmatter":{},"excerpt":"","headers":[{"level":2,"title":"What is Neko-Love?","slug":"what-is-neko-love","link":"#what-is-neko-love","children":[]}],"git":{},"filePathRelative":"docs/FAQ.md"}');export{e as data};

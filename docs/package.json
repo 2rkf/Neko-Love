@@ -1,7 +1,7 @@
 {
-	"name": "seria-docs",
+	"name": "neko-love-docs",
 	"version": "0.0.0",
-	"description": "House documentation for Seria library",
+	"description": "House documentation for Neko-Love library",
 	"repository": "helloreindev/hoshii-docs",
 	"private": true,
 	"scripts": {
