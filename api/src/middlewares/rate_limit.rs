@@ -52,11 +52,11 @@ impl RateLimiterStore {
         let redis_key = format!("ratelimit:{}:{}", user, day_start);
         let usage: u32 = conn.incr(&redis_key, 1).unwrap_or(1);
 
-        if usage == 0 {
+        if usage == 1 {
             let _: () = conn.expire(&redis_key, ttl as i64).unwrap();
         }
 
-        if usage < limit {
+        if usage <= limit {
             RateLimitStatus {
                 is_allowed: true,
                 retry_after: None,
