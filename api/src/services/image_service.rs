@@ -57,7 +57,8 @@ impl ImageService {
                     if key.ends_with(".jpg")
                         || key.ends_with(".png")
                         || key.ends_with(".jpeg")
-                        || key.ends_with(".gif") | key.ends_with(".webp")
+                        || key.ends_with(".gif")
+                        || key.ends_with(".webp")
                     {
                         let filename = key
                             .rsplit('/')
