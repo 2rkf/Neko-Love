@@ -11,11 +11,11 @@
             draggable="false"
           />
           <h1 class="text-6xl font-extrabold text-pink-600 drop-shadow-pink">
-            Neko-<span class="text-orange-400">Love</span>
+            Neko<span class="text-orange-400">i</span>
           </h1>
         </div>
         <p class="max-w-xl text-pink-700 text-lg font-medium backdrop-blur-sm bg-white/40 p-4 rounded-xl shadow-md">
-          Neko-Love is a collection of high-quality images featuring characters
+          Nekoi is a collection of high-quality images featuring characters
           with anime-style appearances.
         </p>
       </div>
@@ -25,15 +25,15 @@
 
 <script setup>
 useHead({
-  title: "Neko-Love",
+  title: "Nekoi",
   meta: [
-    { property: "og:title", content: "Neko-Love" },
+    { property: "og:title", content: "Nekoi" },
     { property: "og:site_name", content: "2rkf" },
     {
       property: "og:description",
       content: "A collection of adorable, high-quality anime-style character images.",
     },
-    { property: "og:image", content: "/neko-love.png" },
+    { property: "og:image", content: "/nekoi.png" },
     { property: "og:image:type", content: "image/png" },
     { property: "og:image:width", content: "1200" },
     { property: "og:image:height", content: "630" },

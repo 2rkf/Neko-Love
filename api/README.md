@@ -1,4 +1,4 @@
-# Neko-Love API
+# Nekoi API
 
 A high-performance API for serving and managing anime-themed images (SFW & NSFW), user authentication, and web-related functionalities. Built with the **Axum** web framework and backed by **MariaDB** for data persistence.
 
@@ -30,7 +30,7 @@ All images are stored in an S3-compatible object storage cloud (e.g., Cloudflare
 
 #### Example Structure:
 ```plaintext
-neko-love/                            # Main bucket
+nekoi/                            # Main bucket
 ├── assets/
 │   ├── nsfw/                   # NSFW content
 │   │   └── azurlane/               # Example category
@@ -52,16 +52,16 @@ The API uses **MariaDB** for user data sessions.
     - Install MariaDB (e.g., `sudo apt install mariadb-server` on Debian/Ubuntu).
     - Create a database and user:
     ```sql
-    CREATE DATABASE neko-love;
+    CREATE DATABASE nekoi;
     CREATE USER 'neko_user'@'localhost' IDENTIFIED BY 'secure_password';
-    GRANT ALL PRIVILEGES ON neko-love.* TO 'neko_user'@'localhost';
+    GRANT ALL PRIVILEGES ON nekoi.* TO 'neko_user'@'localhost';
     FLUSH PRIVILEGES;
     ```
 2. Configure `.env`:
 
     Add your database URL to the `.env` file:
     ```env
-    DATABASE_URL=mysql://neko_user:secure_password@localhost/neko-love
+    DATABASE_URL=mysql://neko_user:secure_password@localhost/nekoi
     ```
 3. Run migrations:
 

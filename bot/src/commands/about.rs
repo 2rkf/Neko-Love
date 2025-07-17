@@ -26,7 +26,7 @@ pub async fn handle(
     )?;
     let embed = Embed {
         title: Some("About me!".to_string()),
-        description: Some("I'm a Discord bot for **Neko-Love**.".to_string()),
+        description: Some("I'm a Discord bot for **Nekoi**.".to_string()),
         color: Some(0xe4ffcb),
         fields: Vec::new(),
         author: None,

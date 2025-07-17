@@ -1,7 +1,7 @@
 {
-	"name": "neko-love-docs",
+	"name": "nekoi-docs",
 	"version": "0.0.0",
-	"description": "House documentation for Neko-Love library",
+	"description": "House documentation for Nekoi.",
 	"repository": "helloreindev/hoshii-docs",
 	"private": true,
 	"scripts": {

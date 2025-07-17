@@ -15,7 +15,7 @@
             Create Account
           </h2>
           <p class="text-pink-700 text-sm">
-            Create your account to join Neko-Love.
+            Create your account to join Nekoi.
           </p>
         </div>
 
@@ -148,9 +148,9 @@ const submitForm = () => {
 };
 
 useHead({
-  title: "Register — Neko-Love",
+  title: "Register — Nekoi",
   meta: [
-    { name: "description", content: "Register for Neko-Love." },
+    { name: "description", content: "Register for Nekoi." },
     { name: "theme-color", content: "#ffbb88" },
   ],
 });

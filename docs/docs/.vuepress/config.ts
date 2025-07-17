@@ -6,15 +6,15 @@ import { sidebar } from "./configs/sidebar";
 export default defineUserConfig({
     lang: "en-GB",
     base: "/",
-    title: "Neko-Love",
+    title: "Nekoi",
     head: [
         ["link", { rel: "icon", href: "/favicon.ico" }],
-        ["meta", { property: "og:title", content: "Neko-Love" }],
+        ["meta", { property: "og:title", content: "Nekoi" }],
         ["meta", { property: "og:image", content: "/hero.png" }],
-        ["meta", { property: "og:description", content: "Neko-Love is a collection of high-quality images featuring characters with anime-style appearances." }],
+        ["meta", { property: "og:description", content: "Nekoi is a collection of high-quality images featuring characters with anime-style appearances." }],
         ["meta", { property: "theme-color", content: "#ff7b25" }],
     ],
-    description: "Neko-Love is a collection of high-quality images featuring characters with anime-style appearances.",
+    description: "Nekoi is a collection of high-quality images featuring characters with anime-style appearances.",
     extendsPage: (data) => {
         if (data.frontmatter.permalink) {
             return;

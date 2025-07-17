@@ -1,3 +1,3 @@
-# Neko-Love Documentation
+# Nekoi Documentation
 
 > This page is under construction.

@@ -123,9 +123,9 @@ async function authorise() {
 }
 
 useHead({
-  title: "Login — Neko-Love",
+  title: "Login — Nekoi",
   meta: [
-    { name: "description", content: "Login to Neko-Love." },
+    { name: "description", content: "Login to Nekoi." },
     { name: "theme-color", content: "#ffd8e0" },
   ],
 });

@@ -1,3 +1,3 @@
-# Neko-Love Discord Bot
+# Nekoi Discord Bot
 
 > This page is under construction.

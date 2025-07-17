@@ -4,7 +4,7 @@ use serde::Serialize;
 /// Represents a user entity in the system with authentication, profile, and account status fields.
 #[derive(Debug, Serialize)]
 pub struct User {
-    /// API key for Neko-Love.
+    /// API key for Nekoi.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub api_key: Option<String>,
 

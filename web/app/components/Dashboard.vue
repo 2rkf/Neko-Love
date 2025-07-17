@@ -23,7 +23,7 @@
       >
         <h2 class="text-2xl font-bold text-orange-400 mb-1">API Key</h2>
         <p class="text-pink-700 text-sm mb-4">
-          Use this key to interact with Neko-Love API.
+          Use this key to interact with Nekoi API.
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4">
@@ -208,9 +208,9 @@ const generateToken = async () => {
 };
 
 useHead({
-  title: "Dashboard — Neko-Love",
+  title: "Dashboard — Nekoi",
   meta: [
-    { name: "description", content: "View your dashboard on Neko-Love." },
+    { name: "description", content: "View your dashboard on Nekoi." },
     { name: "theme-color", content: "#ffd8b1" },
   ],
 });

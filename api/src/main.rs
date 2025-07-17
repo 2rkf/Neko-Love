@@ -44,7 +44,7 @@ async fn main() {
     dotenv().ok();
 
     let db_url =
-        env::var("DATABASE_URL").unwrap_or_else(|_| "mysql://root@localhost/neko-love".into());
+        env::var("DATABASE_URL").unwrap_or_else(|_| "mysql://root@localhost/nekoi".into());
     let pool = MySqlPool::connect(&db_url).await.unwrap();
     let port: u16 = env::var("PORT")
         .unwrap_or("3030".into())
@@ -52,7 +52,7 @@ async fn main() {
         .expect("Missing 'PORT'");
     let ipv6 = SocketAddr::from(([0, 0, 0, 0, 0, 0, 0, 0], port));
     let redis_url = env::var("REDIS_URL").unwrap_or_else(|_| "redis://127.0.0.1/".into());
-    let s3_bucket = env::var("S3_BUCKET").unwrap_or_else(|_| "neko-love-assets".into());
+    let s3_bucket = env::var("S3_BUCKET").unwrap_or_else(|_| "nekoi-assets".into());
     let access_key_id = env::var("AWS_ACCESS_KEY_ID").expect("Missing 'AWS_ACCESS_KEY_ID'");
     let secret_access_key =
         env::var("AWS_SECRET_ACCESS_KEY").expect("Missing 'AWS_SECRET_ACCESS_KEY'");

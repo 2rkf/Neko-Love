@@ -43,7 +43,7 @@ pub async fn create_state(
             secret_access_key,
             None,
             None,
-            "neko-love",
+            "nekoi",
         ))
         .load()
         .await;
