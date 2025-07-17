@@ -47,6 +47,17 @@
                   block
                 />
               </NuxtLink>
+              <NuxtLink to="/gallery">
+                <UButton
+                  class="cursor-pointer"
+                  icon="i-lucide-image"
+                  label="Gallery"
+                  color="primary"
+                  variant="ghost"
+                  size="sm"
+                  block
+                />
+              </NuxtLink>
               <UButton
                 class="cursor-pointer"
                 icon="i-lucide-log-out"
