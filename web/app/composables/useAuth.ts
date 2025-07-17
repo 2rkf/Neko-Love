@@ -19,6 +19,31 @@ export function useAuth() {
     const status = ref<AuthStatus>("loading");
     const error = ref<Error | null>(null);
 
+    const loadCachedUser = () => {
+        if (import.meta.client) {
+            const cachedUser = localStorage.getItem("auth_user");
+            if (cachedUser && token.value) {
+                user.value = JSON.parse(cachedUser);
+                status.value = "authenticated";
+                return true;
+            }
+        }
+        return false;
+    };
+
+    const saveUserToCache = (userData: User) => {
+        if (import.meta.client) {
+            localStorage.setItem("auth_user", JSON.stringify(userData));
+        }
+    };
+
+    const updateUser = (updatedFields: Partial<User>) => {
+        if (user.value) {
+            user.value = { ...user.value, ...updatedFields };
+            saveUserToCache(user.value);
+        }
+    };
+
     const login = async (loginToken: string) => {
         try {
             sessionToken.value = loginToken;
@@ -38,12 +63,23 @@ export function useAuth() {
         token.value = null;
         user.value = null;
         status.value = "unauthenticated";
+        if (import.meta.client) {
+            localStorage.removeItem("auth_user");
+        }
         await navigateTo("/");
     };
 
-    const fetchUser = async () => {
+    const fetchUser = async (force = false) => {
         if (!token.value) {
             status.value = "unauthenticated";
+            user.value = null;
+            if (import.meta.client) {
+                localStorage.removeItem("auth_user");
+            }
+            return;
+        }
+
+        if (!force && loadCachedUser()) {
             return;
         }
 
@@ -59,18 +95,30 @@ export function useAuth() {
 
             user.value = response as User;
             status.value = "authenticated";
+            saveUserToCache(user.value);
         } catch (err) {
             sessionToken.value = null;
             token.value = null;
             user.value = null;
             error.value = err as Error;
             status.value = "unauthenticated";
+            if (import.meta.client) {
+                localStorage.removeItem("auth_user");
+            }
             throw err;
         }
     };
 
     onMounted(async () => {
-        await fetchUser();
+        if (!loadCachedUser()) {
+            await fetchUser();
+        }
+    });
+
+    watch(token, async (newToken, oldToken) => {
+        if (newToken !== oldToken) {
+            await fetchUser(true);
+        }
     });
 
     return {
@@ -80,6 +128,7 @@ export function useAuth() {
         user,
         status,
         error,
-        fetchUser
+        fetchUser,
+        updateUser,
     };
 }

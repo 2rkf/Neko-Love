@@ -12,7 +12,10 @@
         <h1 class="text-4xl font-extrabold text-pink-600 drop-shadow-pink">
           Dashboard
         </h1>
-        <p class="text-pink-700 text-sm">Welcome back, <b>{{ user.nickname }}</b>!</p>
+        <p class="text-pink-700 text-sm">
+          Welcome back, <b>{{ user.nickname }}</b
+          >!
+        </p>
       </div>
 
       <div
@@ -172,21 +175,25 @@
 <script setup>
 import { generateAuthToken } from "~/utils/generateAuthToken";
 
-const { status, token, user } = useAuth();
+const { status, token, user, updateUser } = useAuth();
 const toast = useToast();
 
 const generateToken = async () => {
+  if (!user.value) return;
+
   const newToken = generateAuthToken();
-  user.value.api_key = newToken;
 
   try {
     await useFetch(`/api/users/${user.value.username}`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token.value}`,
+        "Content-Type": "application/json",
       },
       body: { api_key: newToken },
     });
+
+    updateUser({ api_key: newToken });
 
     toast.add({
       description: "Token generated and saved successfully.",
