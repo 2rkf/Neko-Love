@@ -24,7 +24,10 @@ use tower_http::cors::{Any, CorsLayer};
 
 use crate::app_state::create_state;
 use crate::handlers::images::get_random_image;
-use crate::handlers::{me::get_me, user_authorise::authorise_user, user_fetch::fetch_user, user_register::register_user, user_update::update_user};
+use crate::handlers::{
+    me::get_me, user_authorise::authorise_user, user_fetch::fetch_user,
+    user_register::register_user, user_update::update_user,
+};
 use crate::middlewares::logging::log_requests;
 use crate::models::auth::{AuthClaims, Claims};
 use crate::models::keys::Keys;
@@ -43,14 +46,27 @@ async fn main() {
     let db_url =
         env::var("DATABASE_URL").unwrap_or_else(|_| "mysql://root@localhost/neko-love".into());
     let pool = MySqlPool::connect(&db_url).await.unwrap();
-    let port: u16 = env::var("PORT").unwrap_or("3030".into()).parse().expect("Missing 'PORT'");
+    let port: u16 = env::var("PORT")
+        .unwrap_or("3030".into())
+        .parse()
+        .expect("Missing 'PORT'");
     let ipv6 = SocketAddr::from(([0, 0, 0, 0, 0, 0, 0, 0], port));
     let redis_url = env::var("REDIS_URL").unwrap_or_else(|_| "redis://127.0.0.1/".into());
     let s3_bucket = env::var("S3_BUCKET").unwrap_or_else(|_| "neko-love-assets".into());
     let access_key_id = env::var("AWS_ACCESS_KEY_ID").expect("Missing 'AWS_ACCESS_KEY_ID'");
-    let secret_access_key = env::var("AWS_SECRET_ACCESS_KEY").expect("Missing 'AWS_SECRET_ACCESS_KEY'");
+    let secret_access_key =
+        env::var("AWS_SECRET_ACCESS_KEY").expect("Missing 'AWS_SECRET_ACCESS_KEY'");
     let base_url = env::var("BASE_URL").unwrap_or_else(|_| "http://localhost:3030".into());
-    let state = create_state(pool, base_url, &redis_url, s3_bucket, access_key_id, secret_access_key).await.unwrap();
+    let state = create_state(
+        pool,
+        base_url,
+        &redis_url,
+        s3_bucket,
+        access_key_id,
+        secret_access_key,
+    )
+    .await
+    .unwrap();
     let state_img = state.clone();
 
     let cors = CorsLayer::new()
