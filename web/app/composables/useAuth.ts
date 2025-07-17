@@ -1,16 +1,4 @@
-type AuthStatus = "authenticated" | "unauthenticated" | "loading";
-
-interface User {
-    api_key: string;
-    blacklisted: 0 | 1;
-    created_at: Date;
-    email: string;
-    gold: 0 | 1;
-    id: string;
-    nickname: string;
-    password: string;
-    username: string;
-}
+import type { AuthStatus, User } from "~/types/interfaces";
 
 export function useAuth() {
     const sessionToken = useCookie<string | null>("session_token");

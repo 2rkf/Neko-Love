@@ -1,15 +1,19 @@
 export default defineNuxtPlugin((nuxtApp) => {
-    if (process.client) {
+    if (import.meta.client) {
         const { logout } = useAuth();
         let token: string | null = null;
 
         async function heartbeat() {
             const sessionToken = useCookie<string>("session_token");
-            token = sessionToken.value;
+            token = sessionToken.value as string;
 
             if (token) {
                 try {
-                    const payload = JSON.parse(atob((token).split(".")[1]));
+                    const payloadPart = (token).split(".")[1];
+                    if (!payloadPart) {
+                        throw new Error("Invalid token format");
+                    }
+                    const payload = JSON.parse(atob(payloadPart));
                     const exp = payload.exp * 1000;
                     const now = Date.now();
 
