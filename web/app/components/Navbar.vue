@@ -10,7 +10,7 @@
         draggable="false"
       />
       <h1 class="text-2xl font-extrabold text-pink-600 tracking-wide">
-        Neko-<span class="text-orange-400">Love</span>
+        Ne<span class="text-orange-400">koi</span>
       </h1>
     </NuxtLink>
 
