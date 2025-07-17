@@ -1,15 +1,15 @@
-# Neko-Love
+# Nekoi
 
-![nekolove logo](logo.png)
+![nekoi logo](logo.png)
 
 > A collection of high-quality images featuring characters with anime-style appearances.
 
-Neko-Love is a project with several semi-independent pieces such as:
+Nekoi is a project with several semi-independent pieces such as:
 
-- [Neko-Love API (Axum)](https://github.com/2rkf/Neko-Love/tree/master/api)
-- [Neko-Love Discord Bot (Twilight)](https://github.com/2rkf/Neko-Love/tree/master/bot)
-- [Neko-Love Docs (Vuepress)](https://github.com/2rkf/Neko-Love/tree/master/docs)
-- [Neko-Love Web (Nuxt)](https://github.com/2rkf/Neko-Love/tree/master/web)
+- [Nekoi API (Axum)](https://github.com/2rkf/nekoi/tree/master/api)
+- [Nekoi Discord Bot (Twilight)](https://github.com/2rkf/nekoi/tree/master/bot)
+- [Nekoi Docs (Vuepress)](https://github.com/2rkf/nekoi/tree/master/docs)
+- [Nekoi Web (Nuxt)](https://github.com/2rkf/nekoi/tree/master/web)
 
 ## Configuration
 
